@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MED MORPH — Hospital Resource Optimization System</title>
+<meta name="description" content="MED MORPH is a hospital resource-optimization prototype for dynamically allocating appointments, beds, diagnostic facilities and medical staff based on real-time patient demand.">
+<style>
+:root{--pink:#919fe2;--pink2:#c8cff2;--lav:#acd5e3;--lav2:#eaf6fa;--plum:#2a3d45;--text:#3a484d;--muted:#849096;--bg:#f8fafc;--white:#fff;--green:#45b88b;--red:#e05c76;--orange:#e99a55;--shadow:0 10px 30px rgba(72,45,91,.08)}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}
+button{font:inherit;cursor:pointer;border:0}.app{display:flex;min-height:100vh}.side{width:235px;background:#fff;border-right:1px solid #e9eff2;padding:25px 15px;position:fixed;height:100vh}.logo{font-size:21px;font-weight:800;letter-spacing:1px;color:var(--plum);padding:0 12px}.logo span{color:var(--pink)}.sub{font-size:10px;color:var(--muted);padding:3px 12px 24px}.nav button{width:100%;text-align:left;background:transparent;padding:12px 13px;margin:3px 0;border-radius:12px;color:#6a767b;font-size:13px}.nav button:hover,.nav button.active{background:linear-gradient(90deg,#e6eaf7,#eaf6fa);color:var(--plum);font-weight:700}.status{position:absolute;bottom:25px;left:27px;font-size:11px;color:var(--green)}.main{margin-left:235px;padding:28px 34px 40px;width:calc(100% - 235px);max-width:1600px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}.eyebrow{font-size:11px;color:var(--muted)}h1{margin:4px 0;font-size:27px;color:var(--plum)}h2{font-size:18px;color:var(--plum);margin:0 0 5px}.hospital{background:#fff;padding:10px 16px;border:1px solid #e9eff2;border-radius:13px;font-size:12px}.live{color:var(--green);font-weight:700}.hero{background:linear-gradient(120deg,#dfe4f6,#e9f5fa);border:1px solid #e0e9f0;border-radius:22px;padding:25px 28px;display:flex;justify-content:space-between;align-items:center;box-shadow:var(--shadow);overflow:hidden}.hero h2{font-size:21px}.hero p{max-width:650px;color:#5f696f;line-height:1.5}.big{font-size:38px;font-weight:800;color:var(--plum);margin:8px 0}.heroStats{display:flex;gap:28px}.heroStats div{font-size:11px;color:#6a767b}.heroStats b{display:block;font-size:20px;color:var(--plum);margin-bottom:3px}.btn{background:var(--plum);color:white;padding:11px 17px;border-radius:11px;font-size:12px;font-weight:700}.btn.pink{background:linear-gradient(90deg,#7f8fd2,#9c8bd6)}.grid6{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin:18px 0}.card{background:#fff;border:1px solid #e9eff2;border-radius:16px;padding:16px;box-shadow:var(--shadow)}.kpi small{color:var(--muted);font-size:10px}.kpi strong{display:block;font-size:24px;color:var(--plum);margin:5px 0}.trend{font-size:10px;color:var(--green)}.section{margin-top:22px}.insights{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}.insight{min-height:115px}.tag{font-size:9px;font-weight:800;letter-spacing:.5px;color:#7da0b3}.insight b{display:block;margin:7px 0;color:var(--plum)}.insight p{font-size:11px;color:var(--muted);margin:0;line-height:1.4}.flow{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;align-items:center}.dept{padding:13px 8px;text-align:center;background:#fff;border:1px solid #e9eff2;border-radius:13px;font-size:10px}.dept b{display:block;color:var(--plum);font-size:13px;margin-bottom:4px}.risk{font-size:9px;color:var(--green)}.risk.warn{color:var(--orange)}.risk.bad{color:var(--red)}.recGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.rec b{color:var(--plum);display:block;margin:7px 0}.rec p{font-size:11px;color:var(--muted);line-height:1.4}.miniBtns{display:flex;gap:7px}.miniBtns button{padding:7px 10px;border-radius:8px;font-size:10px;background:#eff5f8;color:var(--plum);font-weight:700}.page{display:none}.page.active{display:block;animation:fade .25s ease}@keyframes fade{from{opacity:.3;transform:translateY(5px)}to{opacity:1;transform:none}}.toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.backnote{color:var(--muted);font-size:12px}.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}.three{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.metric{font-size:28px;font-weight:800;color:var(--plum)}.chart{height:230px;display:flex;align-items:end;gap:9px;padding:25px 10px 10px}.bar{flex:1;background:linear-gradient(#9aa7d3,#a99be1);border-radius:8px 8px 3px 3px;min-height:25px;position:relative}.bar span{position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-size:9px;color:var(--muted)}.slider{margin:18px 0}.slider label{display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:var(--plum)}input[type=range]{width:100%;accent-color:#8899bf}.result{background:#fff;border:1px solid #e9eff2;border-radius:18px;padding:20px}.compare{display:grid;grid-template-columns:1fr 1fr;gap:12px}.compare .card{box-shadow:none}.critical{color:var(--red)}.safe{color:var(--green)}.plan li{margin:10px 0;font-size:12px}.plan li::marker{color:var(--pink)}.hospitalCard{display:flex;justify-content:space-between;align-items:center}.hospitalCard .avail{color:var(--green);font-size:10px;font-weight:800}.graph{height:340px;position:relative;background:radial-gradient(circle at center,#f0f7fb,#fff 65%);border-radius:18px;border:1px solid #e9eff2}.node{position:absolute;padding:11px 14px;border-radius:30px;background:#fff;border:2px solid #cddee7;box-shadow:0 7px 18px #8d6aa822;font-size:10px;font-weight:800;color:var(--plum)}.n1{left:42%;top:43%;border-color:#919fd9}.n2{left:10%;top:18%}.n3{left:70%;top:18%}.n4{left:12%;top:68%}.n5{left:70%;top:68%}.n6{left:43%;top:12%}.line{position:absolute;height:2px;background:#c8dae4;transform-origin:left center}.l1{width:180px;left:30%;top:44%;transform:rotate(-28deg)}.l2{width:180px;left:52%;top:44%;transform:rotate(28deg)}.l3{width:150px;left:28%;top:51%;transform:rotate(25deg)}.l4{width:150px;left:54%;top:51%;transform:rotate(-25deg)}.l5{width:110px;left:48%;top:42%;transform:rotate(-90deg)}.factor{margin:12px 0}.factor label{font-size:10px;display:flex;justify-content:space-between}.factor div{height:9px;background:#eaf2f5;border-radius:9px;margin-top:5px;overflow:hidden}.factor i{display:block;height:100%;background:linear-gradient(90deg,#a6b1e3,#aa9adf);border-radius:9px}.footerNote{margin-top:25px;color:var(--muted);font-size:10px;text-align:center}
+@media(max-width:1000px){.grid6{grid-template-columns:repeat(3,1fr)}.insights,.recGrid,.three{grid-template-columns:1fr 1fr}.two{grid-template-columns:1fr}.flow{grid-template-columns:repeat(4,1fr)}}
+</style>
+
+<style>
+.adminTabs{display:flex;gap:7px;flex-wrap:wrap;margin:15px 0}.adminTabs button{padding:9px 13px;border-radius:10px;background:#eff5f8;color:var(--plum);font-size:11px;font-weight:700}.adminTabs button.active{background:var(--plum);color:#fff}
+.dataTable{width:100%;border-collapse:collapse;font-size:11px}.dataTable th{text-align:left;color:var(--muted);font-size:9px;letter-spacing:.5px;padding:11px;border-bottom:1px solid #e9eff2}.dataTable td{padding:12px 11px;border-bottom:1px solid #ecf0f2}.online{color:var(--green);font-weight:800}.busy{color:var(--orange);font-weight:800}.danger{color:var(--red);font-weight:800}
+.map{height:390px;border-radius:18px;background:linear-gradient(135deg,#fff,#ecf4f8);position:relative;overflow:hidden;border:1px solid #e2e9ee}.room{position:absolute;background:#fff;border:1px solid #cddde6;border-radius:10px;padding:12px 8px;text-align:center;font-size:9px;box-shadow:0 5px 12px #7d629018}.room b{display:block;color:var(--plum);font-size:11px}.corridor{position:absolute;background:#e0ebf0;border-radius:20px}.queueCard{position:relative;overflow:hidden}.queueNum{font-size:34px;font-weight:800;color:var(--plum)}.progress{height:8px;background:#eaf1f4;border-radius:8px;overflow:hidden}.progress i{display:block;height:100%;background:linear-gradient(90deg,#91a0db,#aaa0df);border-radius:8px}
+.appointmentForm label{display:block;font-size:10px;color:var(--muted);margin:12px 0 5px}.appointmentForm input,.appointmentForm select{width:100%;padding:11px;border:1px solid #dfe7ec;border-radius:10px;background:#fff;color:var(--text)}
+.toast{position:fixed;right:25px;bottom:25px;background:var(--plum);color:#fff;padding:13px 17px;border-radius:12px;font-size:11px;box-shadow:var(--shadow);z-index:99}
+</style>
+
+
+<style>
+/* --- visual cleanup pass --- */
+.page{max-width:1180px;margin:0 auto;padding:28px 34px 80px}
+.toolbar{gap:18px}
+.toolbar>div:first-child{min-width:0}
+h1{font-size:28px!important;line-height:1.12!important;margin:5px 0 8px!important}
+h2{font-size:18px!important;line-height:1.25!important}
+h3{font-size:13px!important}
+.backnote{max-width:720px;line-height:1.5}
+.section{margin-top:16px!important}
+.card{border-radius:16px!important}
+.hero{padding:24px!important;border-radius:20px!important}
+.hero p{max-width:760px!important}
+.heroStats{gap:12px!important;margin-top:18px!important}
+.heroStats>div{min-width:105px}
+.grid6{gap:10px!important}
+.kpi{padding:15px!important}
+.kpi strong{font-size:24px!important}
+.adminTabs{background:#f4f7f9;padding:6px;border-radius:13px;gap:4px!important}
+.adminTabs button{border:0!important;background:transparent!important;padding:9px 11px!important}
+.adminTabs button.active{background:var(--plum)!important;color:white!important}
+.dataTable{font-size:10px!important}
+.dataTable th{font-size:8px!important}
+.dataTable td{padding:9px 10px!important}
+.cleanFeature{background:linear-gradient(105deg,#f9f9fe,#f2f7f9)!important;border:1px solid #e0e5ea!important}
+.mutedText{font-size:11px;color:var(--muted);max-width:600px}
+.compactFeatures{margin-top:12px}
+.compactFeatures>div{background:#fff;border:1px solid #e7ecf0;border-radius:12px;padding:13px}
+.compactFeatures b{display:block;font-size:11px;margin-bottom:4px}
+.compactFeatures small{color:var(--muted);font-size:9px}
+.section.two{gap:14px!important}
+.section.three{gap:14px!important}
+.two,.three{align-items:stretch}
+.nav{overflow-y:auto}
+.nav button{white-space:nowrap}
+</style>
+
+
+<style>
+.adminDashHero{background:linear-gradient(115deg,#1d2a30,#4f6779 55%,#8a9fb2);color:white;border-radius:22px;padding:24px;box-shadow:0 16px 40px #4b31561c}
+.adminDashHero .mutedText{color:#e6eaef}
+.statusDot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#75d1a0;margin-right:6px}
+.dashGrid{display:grid;grid-template-columns:1.35fr .65fr;gap:14px}
+.subnav{display:flex;gap:6px;flex-wrap:wrap;padding:5px;background:#f2f5f7;border-radius:12px;margin:14px 0}
+.subnav button{border:0;background:transparent;padding:9px 12px;border-radius:9px;font-size:10px;font-weight:700;color:var(--muted)}
+.subnav button.active{background:var(--plum);color:white}
+.subpage{display:none}.subpage.active{display:block}
+.breadcrumb{font-size:9px;color:var(--muted);margin:2px 0 14px}.breadcrumb b{color:var(--plum)}
+.drillCard{cursor:pointer;transition:.18s}.drillCard:hover{transform:translateY(-2px);box-shadow:0 14px 28px #63426d15}
+.miniGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.miniMetric{padding:12px;border:1px solid #e8ecf0;border-radius:12px;background:#fff}
+.miniMetric b{display:block;font-size:18px;color:var(--plum);margin-top:5px}
+.detailHeader{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.backBtn{border:0;background:#eef2f4;color:var(--plum);padding:8px 11px;border-radius:9px;font-size:10px;font-weight:700;cursor:pointer}
+.alertRow{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid #e9edf0;font-size:10px}
+.alertRow:last-child{border-bottom:0}
+@media(max-width:850px){.dashGrid{grid-template-columns:1fr}.miniGrid{grid-template-columns:1fr}}
+</style>
+
+
+<style>
+/* FINAL UI SIMPLIFICATION */
+.page{max-width:1120px;margin:auto;padding:30px 34px 70px}
+.page h1{font-size:27px!important;margin:3px 0 6px!important}
+.page h2{font-size:17px!important}
+.page h3{font-size:13px!important}
+.page .backnote{font-size:10px;max-width:650px;line-height:1.45}
+.section{margin-top:14px!important}
+.hero{padding:22px!important;min-height:0!important}
+.heroStats>div{padding:8px 12px!important;min-width:90px!important}
+.card{padding:16px!important;border-radius:15px!important}
+.grid6{grid-template-columns:repeat(4,1fr)!important;gap:10px!important}
+.grid6 .kpi:nth-child(n+5){display:none}
+.kpi strong{font-size:23px!important}
+.kpi small{font-size:8px!important}
+.two,.three{gap:12px!important}
+.dataTable th{padding:8px!important;font-size:8px!important}
+.dataTable td{padding:9px!important;font-size:10px!important}
+.dataTable tr:nth-child(n+6){display:none}
+.adminTabs{margin:12px 0!important;padding:5px!important}
+.adminTabs button{font-size:9px!important;padding:8px 10px!important}
+.compactFeatures{gap:10px!important}
+.compactFeatures>div{padding:11px!important}
+.section.card .toolbar{margin-bottom:8px!important}
+.hideDetail{display:none!important}
+.subnav{display:flex;gap:7px;margin:12px 0;padding:5px;background:#f4f7f9;border-radius:12px}
+.subnav button{border:0;background:transparent;padding:8px 12px;border-radius:9px;font-size:9px;font-weight:700;color:var(--plum);cursor:pointer}
+.subnav button.active{background:var(--plum);color:#fff}
+.drillPage{display:none}
+.drillPage.active{display:block}
+.breadcrumb{font-size:9px;color:var(--muted);margin:4px 0 13px}
+.breadcrumb b{color:var(--plum)}
+.adminHero{background:linear-gradient(115deg,#f8f9fe,#f0f6f9);border:1px solid #e0e5eb}
+.adminHero .metricRow{display:flex;gap:24px;margin-top:14px;flex-wrap:wrap}
+.adminHero .metricRow b{font-size:22px;display:block;color:var(--plum)}
+.adminHero .metricRow span{font-size:9px;color:var(--muted)}
+.statusDot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#72a98b;margin-right:5px}
+.alertLine{padding:10px 12px;background:#f7fafc;border-radius:10px;margin:7px 0;font-size:10px}
+</style>
+
+
+<style>
+/* Command Center: intentionally minimal */
+#home .hero{background:linear-gradient(110deg,#f9f9fe,#f3f7f9);border:1px solid #e0e5ea;box-shadow:none}
+#home .hero h2{font-size:20px!important}
+#home .hero p{font-size:11px!important;max-width:560px!important}
+#home .heroStats{margin-top:14px!important}
+#home .heroStats>div{background:rgba(255,255,255,.72);border:1px solid #e6ebf0;border-radius:11px}
+#home .section{margin-top:12px!important}
+#home .card{box-shadow:0 4px 16px rgba(70,45,80,.035)}
+#home .kpi{padding:14px!important}
+#home .kpi strong{font-size:21px!important}
+#home .alertLine{background:#f9fbfc}
+#home .compactFeatures>div{cursor:pointer;transition:.15s}
+#home .compactFeatures>div:hover{transform:translateY(-1px);border-color:#cad6df}
+#home .four{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+</style>
+
+
+<style>
+.adminView{display:none}
+.adminView.active{display:block}
+.adminMainNav{margin-top:12px;overflow-x:auto;white-space:nowrap}
+.adminMainNav button{font-size:9px}
+.navCount{background:#e0e9ef;border-radius:8px;padding:2px 5px;margin-left:3px}
+.fakeChart{height:145px;display:flex;align-items:flex-end;gap:9px;padding:10px 6px;border-bottom:1px solid #e0e4e8}
+.fakeChart .bar{width:8%;min-height:12px;background:#8ea0b5;border-radius:5px 5px 0 0;position:relative}
+.fakeChart .bar span{position:absolute;bottom:-18px;font-size:8px;color:var(--muted);left:50%;transform:translateX(-50%)}
+.chartLegend{display:flex;justify-content:space-between;font-size:8px;color:var(--muted);margin-top:18px}
+.hBars{padding-top:7px}
+.hBars>div{display:grid;grid-template-columns:75px 1fr 30px;gap:8px;align-items:center;margin:12px 0;font-size:9px}
+.hBars i{height:8px;background:#8ea0b5;border-radius:10px;display:block}
+.hBars b{font-size:9px}
+.weeklyChart{height:180px;display:flex;align-items:flex-end;justify-content:space-around;border-bottom:1px solid #e0e4e8;padding:0 10px}
+.weekCol{height:160px;display:flex;align-items:flex-end;gap:4px;position:relative;width:11%}
+.weekCol>div{width:13px;border-radius:4px 4px 0 0}
+.weekCol .volume{background:#8ea0b5}
+.weekCol .capacity{background:#d2dbe3}
+.weekCol span{position:absolute;bottom:-20px;font-size:8px;color:var(--muted);left:50%;transform:translateX(-50%)}
+.legendVolume,.legendCapacity{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:4px}
+.legendVolume{background:#8ea0b5}.legendCapacity{background:#d2dbe3}
+.bedTable tbody tr:nth-child(n+1){display:table-row}
+</style>
+
+
+<style id="admin-tab-fix">
+#adminDash .adminTabPage{display:none !important}
+#adminDash .adminTabPage.active{display:block !important}
+#adminDash #adminTabs button{cursor:pointer;pointer-events:auto}
+#adminDash .dataTable tbody tr{display:table-row !important}
+</style>
+
+<style id="super-admin-tab-fix">
+#admin .admin-main-tabs button,
+#admin .adminTabs button { cursor:pointer !important; pointer-events:auto !important; }
+#admin .admin-panel { display:none !important; }
+#admin .admin-panel.active { display:block !important; }
+</style>
+
+<style id="super-admin-final-fix">
+#admin .adminPane{display:none}
+#admin .adminPane.active{display:block}
+#admin .adminTabs{position:relative;z-index:20}
+#admin .adminTabs button{pointer-events:auto!important;cursor:pointer!important}
+</style>
+<style id="remove-super-admin-tabs">
+/* Super Admin tab strip removed: keep page clean and non-interactive. */
+#admin .admin-main-tabs,
+#admin .adminTabs,
+#admin .super-admin-tabs,
+#admin .admin-nav-tabs { display:none !important; }
+</style>
+
+
+<style id="remove-book-appointment">
+/* Book Appointment removed from the prototype. */
+.book-appointment,
+.bookAppointment,
+[data-page="appointments"] { display:none !important; }
+</style>
+
+
+<style id="med-morph-landing">
+.landing-page{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#2c363c;background:#fff;min-height:100vh}
+.landing-nav{height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 6vw;border-bottom:1px solid #e9edf0;background:rgba(255,255,255,.96);position:relative;z-index:5}
+.landing-brand{display:flex;align-items:center;gap:10px}.landing-logo{width:36px;height:36px;border-radius:11px;background:linear-gradient(135deg,#6e8a9f,#93a0c1);color:#fff;display:grid;place-items:center;font-weight:800}.landing-brand strong{display:block;letter-spacing:.08em;font-size:14px}.landing-brand small{display:block;font-size:8px;color:#7e8890;margin-top:2px}
+.landing-links{display:flex;align-items:center;gap:26px}.landing-links a{font-size:10px;color:#636d74;text-decoration:none}.landing-links button,.landing-primary,.landing-cta button{border:0;background:#53697a;color:#fff;border-radius:10px;padding:11px 17px;font-size:10px;font-weight:700;cursor:pointer;box-shadow:0 8px 20px rgba(93,64,108,.16)}
+.landing-hero{display:grid;grid-template-columns:1fr 1fr;gap:6vw;align-items:center;max-width:1200px;margin:auto;padding:75px 6vw 80px}.landing-hero-copy{max-width:550px}.landing-pill,.landing-label{font-size:9px;font-weight:800;letter-spacing:.16em;color:#6d8197}.landing-hero h1{font-size:56px;line-height:1.04;letter-spacing:-.04em;margin:15px 0;color:#293238}.landing-hero h1 em{font-style:normal;color:#6e8199}.landing-hero p{font-size:14px;line-height:1.75;color:#697278;max-width:510px}.landing-actions{display:flex;gap:14px;align-items:center;margin:27px 0}.landing-secondary{font-size:10px;color:#5f6c76;text-decoration:none}.landing-trust{display:flex;gap:16px;flex-wrap:wrap;color:#7e868d;font-size:8px}
+.landing-visual{position:relative}.landing-visual>img{width:100%;height:520px;object-fit:cover;border-radius:28px;box-shadow:0 25px 60px rgba(70,48,80,.15);filter:saturate(.82)}.landing-float-card{position:absolute;left:-28px;bottom:32px;background:#fff;border:1px solid #e7ecf0;border-radius:17px;padding:15px 18px;width:205px;box-shadow:0 15px 35px rgba(50,35,60,.12)}.landing-float-card span{display:block;font-size:7px;letter-spacing:.12em;color:#8b949c}.landing-float-card strong{display:block;font-size:10px;margin:7px 0 12px}.landing-float-card i{display:inline-block;width:7px;height:7px;background:#72a98b;border-radius:50%;margin-right:5px}.landing-float-card div{display:flex;align-items:baseline;gap:6px}.landing-float-card b{font-size:20px;color:#53697a}.landing-float-card small{font-size:8px;color:#838a91}.landing-float-mini{position:absolute;right:-17px;top:28px;background:#53697a;color:#fff;border-radius:13px;padding:11px 14px;display:flex;gap:8px;align-items:center;box-shadow:0 12px 25px rgba(70,45,80,.18)}.landing-float-mini b{font-size:11px}.landing-float-mini span{font-size:8px}
+.landing-about{background:#f4f7fa;padding:70px 10vw;display:grid;grid-template-columns:1fr 1fr;gap:8vw;align-items:center}.landing-about h2,.landing-section-head h2,.landing-impact h2,.landing-cta h2{font-size:32px;line-height:1.15;letter-spacing:-.025em;margin:10px 0;color:#2d373e}.landing-about p,.landing-impact p{font-size:12px;line-height:1.8;color:#6a7177}
+.landing-features{padding:75px 8vw}.landing-section-head{text-align:center;margin-bottom:35px}.landing-feature-grid{max-width:1100px;margin:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:13px}.landing-feature-grid article{padding:24px 20px;border:1px solid #e7ecf0;border-radius:17px;background:#fff}.landing-feature-grid article span{font-size:8px;color:#8094a7}.landing-feature-grid h3{font-size:14px;margin:18px 0 8px}.landing-feature-grid p{font-size:10px;line-height:1.65;color:#757e86}
+.landing-impact{background:#f1f4f6;padding:75px 10vw;display:grid;grid-template-columns:.9fr 1fr;gap:7vw;align-items:center}.landing-impact-image img{width:100%;height:390px;object-fit:cover;border-radius:22px;filter:saturate(.75)}.landing-metrics{display:flex;gap:30px;margin-top:28px}.landing-metrics strong{display:block;font-size:24px;color:#586c7e}.landing-metrics small{font-size:8px;color:#757e86}.landing-cta{text-align:center;padding:85px 20px;background:linear-gradient(135deg,#f9faff,#eef3f6)}.landing-cta p{font-size:11px;color:#757e86;margin:8px 0 24px}.landing-footer{padding:25px 7vw;display:flex;justify-content:space-between;gap:20px;font-size:8px;color:#81888f}.landing-footer strong{color:#485865;margin-right:8px}.landing-footer span{font-size:8px}
+@media(max-width:850px){.landing-links a{display:none}.landing-hero,.landing-about,.landing-impact{grid-template-columns:1fr}.landing-hero h1{font-size:42px}.landing-feature-grid{grid-template-columns:1fr 1fr}.landing-visual>img{height:390px}.landing-float-card{left:15px}.landing-float-mini{right:15px}.landing-about,.landing-impact{padding:55px 7vw}}
+</style>
+
+</head>
+<body>
+<!-- MED MORPH LANDING PAGE -->
+<section id="landing" class="landing-page">
+  <header class="landing-nav">
+    <div class="landing-brand">
+      <div class="landing-logo">M</div>
+      <div><strong>MED MORPH</strong><small>Intelligent Hospital Operations</small></div>
+    </div>
+    <div class="landing-links">
+      <a href="#landing-about">About</a>
+      <a href="#landing-features">Platform</a>
+      <a href="#landing-impact">Why MED MORPH</a>
+      <button onclick="enterMedMorph()">Enter Platform →</button>
+    </div>
+  </header>
+
+  <div class="landing-hero">
+    <div class="landing-hero-copy">
+      <span class="landing-pill">HOSPITAL RESOURCE OPTIMIZATION SYSTEM</span>
+      <h1>Dynamic resource allocation.<br><em>Consistent patient care.</em></h1>
+      <p>MED MORPH consolidates hospital capacity, patient flow, resource allocation and emergency operations into a single operational platform, allowing administrators to respond to changing demand with clear, data-informed decisions.</p>
+      <div class="landing-actions">
+        <button class="landing-primary" onclick="enterMedMorph()">Enter the Platform →</button>
+        <a class="landing-secondary" href="#landing-about">Learn more</a>
+      </div>
+      <div class="landing-trust">
+        <span>Real-time capacity monitoring</span>
+        <span>Data-driven recommendations</span>
+        <span>Unified operational view</span>
+      </div>
+    </div>
+    <div class="landing-visual">
+      <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200&q=85" alt="Modern hospital interior">
+      <div class="landing-float-card">
+        <span>LIVE HOSPITAL STATUS</span>
+        <strong><i></i> Operations stable</strong>
+        <div><b>78%</b><small>capacity utilized</small></div>
+      </div>
+      <div class="landing-float-mini">
+        <b>AI</b><span>Decision support active</span>
+      </div>
+    </div>
+  </div>
+
+  <section id="landing-about" class="landing-about">
+    <div>
+      <span class="landing-label">WHAT IS MED MORPH?</span>
+      <h2>One intelligent layer across the hospital.</h2>
+    </div>
+    <p>MED MORPH is a hospital intelligence and operations platform designed to help administrators understand what is happening across the hospital, identify pressure points and make faster, data-informed decisions.</p>
+  </section>
+
+  <section id="landing-features" class="landing-features">
+    <div class="landing-section-head">
+      <span class="landing-label">ONE PLATFORM · MULTIPLE OPERATIONS</span>
+      <h2>Everything important, connected.</h2>
+    </div>
+    <div class="landing-feature-grid">
+      <article><span>01</span><h3>Hospital Command Center</h3><p>A clean real-time view of capacity, patient flow and operational status.</p></article>
+      <article><span>02</span><h3>AI Intelligence Engine</h3><p>Recommendations with clear reasoning so administrators understand the “why”.</p></article>
+      <article><span>03</span><h3>Resource Management</h3><p>Track beds, specialists, machines and facilities across the hospital.</p></article>
+      <article><span>04</span><h3>Emergency Operations</h3><p>Monitor emergency load, critical capacity and operational readiness.</p></article>
+    </div>
+  </section>
+
+  <section id="landing-impact" class="landing-impact">
+    <div class="landing-impact-image">
+      <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1000&q=85" alt="Healthcare professional in hospital">
+    </div>
+    <div class="landing-impact-copy">
+      <span class="landing-label">DESIGNED FOR BETTER DECISIONS</span>
+      <h2>From scattered data to a clear picture of the hospital.</h2>
+      <p>Instead of switching between disconnected operational views, MED MORPH creates a unified picture of hospital activity and turns complex information into actionable intelligence.</p>
+      <div class="landing-metrics">
+        <div><strong>190+</strong><small>Tracked beds & capacity</small></div>
+        <div><strong>20</strong><small>Specialists monitored</small></div>
+        <div><strong>15</strong><small>Medical machines</small></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="landing-cta">
+    <span class="landing-label">GET STARTED</span>
+    <h2>A clearer view of hospital operations.</h2>
+    <p>Enter the MED MORPH platform to review live capacity, resource allocation and emergency readiness.</p>
+    <button onclick="enterMedMorph()">Enter the Platform →</button>
+  </section>
+
+  <footer class="landing-footer">
+    <div><strong>MED MORPH</strong><span>Intelligent Hospital Operations Platform</span></div>
+    <span>AI · Capacity · Flow · Emergency · Resources</span>
+  </footer>
+</section>
+<div class="app" id="mainApp" style="display:none">
+<aside class="side">
+<div class="logo" style="cursor:pointer" onclick="returnToOverview()" title="Return to overview">MED <span>MORPH</span></div><div class="sub">HOSPITAL RESOURCE OPTIMIZATION SYSTEM</div>
+<div class="nav">
+<button class="active" onclick="show('home',this)">⌂ &nbsp; Command Center</button>
+<button onclick="show('forecast',this)">◌ &nbsp; AI Forecast</button>
+<button onclick="show('resource',this)">Resource Allocation</button>
+<button onclick="show('simulation',this)">⚡ &nbsp; What-If Simulation</button>
+<button onclick="show('twin',this)">◈ &nbsp; Digital Twin</button>
+<button onclick="show('decision',this)">✧ &nbsp; AI Decision Intelligence</button>
+<button onclick="show('network',this)">⇄ &nbsp; Hospital Network</button>
+<button onclick="show('admin',this)">⌘ &nbsp; Super Admin</button>
+<button onclick="show('adminDash',this)">▣ &nbsp; Admin Dashboard</button>
+
+<button onclick="show('queues',this)">◷ &nbsp; Patient Queues</button>
+<button onclick="show('patients',this)">♙ &nbsp; Patient Records</button>
+<button onclick="show('analytics',this)">△ &nbsp; Bottleneck Radar</button>
+</div><div class="status">● All systems operational</div>
+</aside>
+<main class="main">
+
+
+<section id="home" class="page">
+<div class="toolbar">
+  <div>
+    <div class="eyebrow">MED MORPH · HOSPITAL COMMAND CENTER</div>
+    <h1>Good evening. Hospital is stable.</h1>
+    <div class="backnote">A minimal live overview of the hospital's most important operational signals.</div>
+  </div>
+  <span class="live">● LIVE</span>
+</div>
+
+<div class="hero" style="margin-bottom:16px">
+  <div>
+    <div class="eyebrow">CURRENT HOSPITAL STATUS</div>
+    <h2>Operational capacity is within safe limits.</h2>
+    <p>148 of 190 beds occupied. Emergency demand is elevated but manageable.</p>
+    <div class="heroStats">
+      <div><b>78%</b>bed occupancy</div>
+      <div><b>42</b>emergency waiting</div>
+      <div><b>8</b>ICU beds free</div>
+    </div>
+  </div>
+</div>
+
+<div class="section four">
+  <div class="card kpi"><small>BEDS</small><strong>148/190</strong><span class="trend">78% occupied</span></div>
+  <div class="card kpi"><small>ICU</small><strong>8</strong><span class="trend">available</span></div>
+  <div class="card kpi"><small>EMERGENCY</small><strong>42</strong><span class="busy">waiting</span></div>
+  <div class="card kpi"><small>DOCTORS</small><strong>31</strong><span class="trend">on duty</span></div>
+</div>
+
+<div class="section two">
+  <div class="card">
+    <span class="tag">ATTENTION</span>
+    <h2>2 things need attention</h2>
+    <div class="alertLine"><span class="statusDot" style="background:#c77979"></span>Emergency queue is above normal</div>
+    <div class="alertLine"><span class="statusDot" style="background:#d09a68"></span>Radiology waiting time is 46 min</div>
+  </div>
+  <div class="card">
+    <span class="tag">QUICK ACCESS</span>
+    <h2>Go where you need</h2>
+    <div class="compactFeatures three">
+      <div onclick="show('aiEngine',document.querySelectorAll('.nav button')[1])"><b>AI Engine</b><small>Recommendations</small></div>
+      <div onclick="show('emergency',document.querySelectorAll('.nav button')[2])"><b>Emergency</b><small>Live operations</small></div>
+      <div onclick="show('adminDash',document.querySelectorAll('.nav button')[6])"><b>Admin</b><small>Hospital control</small></div>
+    </div>
+  </div>
+</div>
+
+<div class="section card">
+  <div class="toolbar">
+    <div>
+      <span class="tag">SYSTEM STATUS</span>
+      <h2>All core systems operational</h2>
+    </div>
+    <span class="online">● Synced 12 sec ago</span>
+  </div>
+  <div class="three compactFeatures">
+    <div><b>Bed Management</b><small>Operational</small></div>
+    <div><b>Doctor Scheduling</b><small>Operational</small></div>
+    <div><b>Resource Tracking</b><small>Operational</small></div>
+  </div>
+</div>
+</section>
+
+
+<section id="forecast" class="page">
+<div class="toolbar"><div><div class="eyebrow">AI ENGINE · PYTHON + XGBOOST</div><h1>Demand Forecast</h1><div class="backnote">Know the pressure before it arrives.</div></div><button class="btn pink" onclick="alert('New 24-hour forecast generated with 91% confidence.')">Run New Forecast</button></div>
+<div class="two"><div class="card"><h2>Patient demand — next 24 hours</h2><div class="chart">
+<div class="bar" style="height:35%"><span>Now</span></div><div class="bar" style="height:42%"><span>2h</span></div><div class="bar" style="height:51%"><span>4h</span></div><div class="bar" style="height:72%"><span>6h</span></div><div class="bar" style="height:94%"><span>8h</span></div><div class="bar" style="height:79%"><span>10h</span></div><div class="bar" style="height:62%"><span>12h</span></div><div class="bar" style="height:52%"><span>18h</span></div><div class="bar" style="height:44%"><span>24h</span></div>
+</div></div><div class="card"><div class="three"><div><small>PEAK</small><div class="metric">7 PM</div></div><div><small>SURGE</small><div class="metric">+27%</div></div><div><small>CONFIDENCE</small><div class="metric">91%</div></div></div><hr style="border:0;border-top:1px solid #e9eff2;margin:22px 0"><h2>AI interpretation</h2><p style="font-size:12px;color:var(--muted);line-height:1.6">The model combines historical arrivals, current occupancy, time-of-day patterns and live patient flow to forecast operational pressure.</p><div class="three"><div><small>BEDS</small><div class="metric">+18</div></div><div><small>NURSES</small><div class="metric">+5</div></div><div><small>RISK</small><div class="metric critical">HIGH</div></div></div></div></div>
+</section>
+
+<section id="resource" class="page">
+<div class="toolbar"><div><div class="eyebrow">OPTIMIZATION ENGINE · GOOGLE OR-TOOLS</div><h1>Resource Orchestration</h1><div class="backnote">Put every resource where it has the highest impact.</div></div><button class="btn pink" onclick="applyResource()">Optimize Resources</button></div>
+<div class="three"><div class="card"><span class="tag">CURRENT STATE</span><h2>Emergency</h2><div class="metric">82%</div><p style="font-size:11px;color:var(--muted)">High utilization</p></div><div class="card"><span class="tag">AI OPTIMIZATION</span><h2>Recommended allocation</h2><p>→ 3 nurses to Emergency</p><p>→ 6 beds to Emergency</p><p>→ 2 ICU beds reserved</p></div><div class="card"><span class="tag">FUTURE STATE</span><h2>Emergency</h2><div class="metric" id="resMetric">68%</div><p style="font-size:11px;color:var(--green)">Stabilized</p></div></div>
+<div class="section two"><div class="card"><h2>Allocation map</h2><div style="padding:20px;text-align:center;font-size:30px;color:#9ebfd1">WARD  →  REALLOCATION  →  EMERGENCY</div><p style="text-align:center;color:var(--muted);font-size:11px">3 nurses · 6 beds · optimized by MED MORPH</p></div><div class="card"><h2>Expected impact</h2><div class="three"><div><small>WAITING</small><div class="metric" id="resWait">18m</div></div><div><small>ICU</small><div class="metric">84%</div></div><div><small>UTIL.</small><div class="metric">91%</div></div></div></div></div>
+</section>
+
+<section id="simulation" class="page">
+<div class="toolbar"><div><div class="eyebrow">SIMPY + DIGITAL TWIN</div><h1>What-If Simulation</h1><div class="backnote">Don't wait for the emergency. Simulate it.</div></div><button class="btn pink" onclick="runSim()">Run Simulation</button></div>
+<div class="two"><div class="card"><h2>Scenario parameters</h2>
+<div class="slider"><label>Patient Surge <span id="surgeV">40%</span></label><input id="surge" type="range" min="0" max="80" value="40" oninput="surgeV.textContent=this.value+'%'"></div>
+<div class="slider"><label>Staff Absence <span id="staffV">20%</span></label><input id="staff" type="range" min="0" max="60" value="20" oninput="staffV.textContent=this.value+'%'"></div>
+<div class="slider"><label>ICU Capacity Reduction <span id="icuV">10%</span></label><input id="icu" type="range" min="0" max="50" value="10" oninput="icuV.textContent=this.value+'%'"></div>
+<div class="slider"><label>Ambulance Availability <span id="ambV">70%</span></label><input id="amb" type="range" min="20" max="100" value="70" oninput="ambV.textContent=this.value+'%'"></div>
+<div style="margin-top:20px;padding:15px;background:#f1f7fa;border-radius:13px;font-size:11px"><b>Scenario:</b> High emergency pressure with constrained staff and ICU capacity.</div></div>
+<div class="result"><h2>Hospital impact</h2><div class="compare"><div class="card"><small>CURRENT</small><h2>Stable</h2><p>Bed occupancy <b>74%</b></p><p>Waiting <b>18 min</b></p><p>ICU beds <b>18</b></p><p>Response <b>8 min</b></p></div><div class="card" id="simResult"><small>SIMULATED</small><h2 id="simState">Ready</h2><p>Bed occupancy <b id="simBed">—</b></p><p>Waiting <b id="simWait">—</b></p><p>ICU beds <b id="simICU">—</b></p><p>Response <b id="simResp">—</b></p><p>Projected queue <b id="simQueue">—</b></p></div></div><p id="simExplanation" style="font-size:10px;color:var(--muted);margin-top:14px">Set scenario variables and run the simulation.</p></div></div>
+<div id="plan" class="section card" style="display:none"><div class="toolbar"><div><span class="tag">RESPONSE PLAN</span><h2>AI has a stabilization strategy</h2></div><button class="btn pink" onclick="stabilize()">Apply AI Plan</button></div><div class="two"><ul class="plan"><li>Activate 4 additional nurses</li><li>Convert 6 general beds</li><li>Reserve 2 ICU beds</li><li>Redirect low-priority patients</li><li>Request nearby hospital support</li></ul><div id="stabilized" style="padding:15px;background:#eef9f5;border-radius:14px"><b>Expected impact</b><p>Waiting time: <strong>52 → 31 min</strong></p><p>Bed occupancy: <strong>96 → 84%</strong></p><p>Emergency response: <strong>16 → 10 min</strong></p></div></div></div>
+</section>
+
+<section id="twin" class="page">
+<div class="toolbar"><div><div class="eyebrow">LIVE OPERATIONAL MODEL</div><h1>Hospital Digital Twin</h1><div class="backnote">Your hospital, recreated in real time.</div></div><button class="btn pink" onclick="alert('Simulation mode activated: +40% patient surge')">Simulation Mode</button></div>
+<div class="card"><div class="three">
+<div class="dept"><b>EMERGENCY</b>84 patients<br><span class="risk bad">Critical</span></div><div class="dept"><b>ICU</b>91% occupied<br><span class="risk bad">Critical</span></div><div class="dept"><b>SURGERY</b>68% occupied<br><span class="risk">Healthy</span></div><div class="dept"><b>CARDIOLOGY</b>72% occupied<br><span class="risk">Healthy</span></div><div class="dept"><b>PEDIATRICS</b>61% occupied<br><span class="risk">Healthy</span></div><div class="dept"><b>RADIOLOGY</b>82% occupied<br><span class="risk warn">Rising</span></div></div></div>
+<div class="section card" style="height:260px;background:linear-gradient(135deg,#f6f8fb,#eaf6fa)"><h2>Live hospital movement</h2><div style="display:flex;justify-content:center;align-items:center;height:180px;gap:8px;font-size:12px"><span class="dept">Arrival<br>●●●</span>→<span class="dept">Triage<br>●●</span>→<span class="dept">Diagnosis<br>●●●</span>→<span class="dept">Radiology<br>●●</span>→<span class="dept">ICU<br>●●●</span></div></div>
+</section>
+
+<section id="decision" class="page">
+<div class="toolbar"><div><div class="eyebrow">NEO4J + SHAP</div><h1>AI Decision Intelligence</h1><div class="backnote">Understand the relationships and the reason behind every AI decision.</div></div></div>
+<div class="two"><div class="card"><h2>Emergency Knowledge Graph</h2><div class="graph"><div class="line l1"></div><div class="line l2"></div><div class="line l3"></div><div class="line l4"></div><div class="line l5"></div><div class="node n1">PATIENT P-1042</div><div class="node n2">Critical Case</div><div class="node n3">Cardiology</div><div class="node n4">ICU Bed</div><div class="node n5">Hospital</div><div class="node n6">Specialist</div></div></div>
+<div class="card"><span class="tag">EXPLAINABLE AI</span><h2>Why did AI move 3 nurses?</h2><p style="font-size:12px;color:var(--muted)">Decision: General Ward → Emergency</p>
+<div class="factor"><label>Emergency Demand <b>92%</b></label><div><i style="width:92%"></i></div></div><div class="factor"><label>Current Occupancy <b>84%</b></label><div><i style="width:84%"></i></div></div><div class="factor"><label>Predicted Surge <b>89%</b></label><div><i style="width:89%"></i></div></div><div class="factor"><label>Staff Availability <b>58%</b></label><div><i style="width:58%"></i></div></div><div class="factor"><label>Time of Day <b>44%</b></label><div><i style="width:44%"></i></div></div>
+<hr style="border:0;border-top:1px solid #e9eff2;margin:20px 0"><h2>Expected impact</h2><div class="three"><div><small>WAITING</small><div class="metric">31m</div></div><div><small>RESPONSE</small><div class="metric">10m</div></div><div><small>UTIL.</small><div class="metric">91%</div></div></div></div></div>
+</section>
+
+<section id="network" class="page">
+<div class="toolbar"><div><div class="eyebrow">NETWORK COORDINATION</div><h1>Hospital Network</h1><div class="backnote">Capacity without borders.</div></div><button class="btn pink" onclick="alert('AI recommendation: Sunrise Medical Center is the best destination.')">Find Best Hospital</button></div>
+<div class="three"><div class="card hospitalCard"><div><h2>Sunrise Medical Center</h2><small>4.1 km · 32 beds · 8 ICU · 5 ambulances</small></div><span class="avail">HIGH CAPACITY</span></div><div class="card hospitalCard"><div><h2>City Medical Center</h2><small>3.2 km · 22 beds · 5 ICU · 4 ambulances</small></div><span class="avail">AVAILABLE</span></div><div class="card hospitalCard"><div><h2>Metro Care</h2><small>5.8 km · 11 beds · 2 ICU · 2 ambulances</small></div><span style="color:var(--orange);font-size:10px;font-weight:800">LIMITED</span></div></div>
+<div class="section card" style="background:linear-gradient(120deg,#e6eaf7,#eaf6fa)"><span class="tag">SYSTEM RECOMMENDATION</span><h2>Sunrise Medical Center</h2><p style="font-size:13px">Redirect <b>5 non-critical patients</b> here to protect City General Hospital's emergency capacity.</p><div class="three"><div>Distance ✓</div><div>Bed capacity ✓</div><div>ICU availability ✓</div></div></div>
+</section>
+
+<section id="analytics" class="page">
+<div class="toolbar"><div><div class="eyebrow">LIVE RISK INTELLIGENCE</div><h1>Bottleneck Radar</h1><div class="backnote">See operational pressure before it becomes a crisis.</div></div><button class="btn pink" onclick="alert('Risk scan completed. Radiology is the next predicted bottleneck.')">Run Risk Scan</button></div>
+<div class="three">
+<div class="card"><span class="tag">CRITICAL</span><h2>ICU</h2><div class="metric critical">91%</div><p style="font-size:11px;color:var(--muted)">Capacity threshold approaching.</p></div>
+<div class="card"><span class="tag">HIGH RISK</span><h2>Radiology</h2><div class="metric">96%</div><p style="font-size:11px;color:var(--muted)">Predicted in 42 minutes.</p></div>
+<div class="card"><span class="tag">WATCH</span><h2>Emergency</h2><div class="metric">88%</div><p style="font-size:11px;color:var(--muted)">Surge expected during evening peak.</p></div>
+</div>
+<div class="section two">
+<div class="card"><h2>Hospital pressure timeline</h2>
+<div style="padding:22px 5px">
+<div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted)"><span>NOW</span><span>15m</span><span>30m</span><span>45m</span><span>60m</span></div>
+<div style="height:14px;background:#eaf2f5;border-radius:20px;margin:15px 0;overflow:hidden"><div style="width:86%;height:100%;background:linear-gradient(90deg,#b7a8e8,#94a1de);border-radius:20px"></div></div>
+<div style="display:flex;justify-content:space-between;font-size:10px"><b>Stable</b><b>Rising</b><b class="critical">Critical</b></div>
+</div>
+<h2>AI prevention</h2><p style="font-size:12px;color:var(--muted);line-height:1.5">Temporarily allocate 1 radiologist and route non-urgent imaging to the lower-load unit.</p>
+<button class="btn pink" onclick="alert('Bottleneck prevention applied.')">Prevent Bottleneck</button>
+</div>
+<div class="card"><h2>Operational risk mix</h2>
+<div class="factor"><label>Capacity pressure <b>88%</b></label><div><i style="width:88%"></i></div></div>
+<div class="factor"><label>Staff pressure <b>64%</b></label><div><i style="width:64%"></i></div></div>
+<div class="factor"><label>Demand volatility <b>79%</b></label><div><i style="width:79%"></i></div></div>
+<div class="factor"><label>Network availability <b>71%</b></label><div><i style="width:71%"></i></div></div>
+<div style="margin-top:25px;padding:15px;border-radius:14px;background:#f1f6f9"><span class="tag">NEXT BOTTLENECK</span><h2 style="margin-top:6px">Radiology · 42 min</h2><p style="font-size:11px;color:var(--muted)">MED MORPH confidence: 89%</p></div>
+</div></div>
+</section>
+
+
+<section id="admin" class="page">
+<div class="toolbar"><div><div class="eyebrow">SUPER ADMIN · GLOBAL HOSPITAL CONTROL</div><h1>Hospital Intelligence Command</h1><div class="backnote">One control layer for beds, doctors, machines, facilities, queues, emergencies and AI operations.</div></div><div><button class="btn" onclick="toast('All hospital feeds synchronized successfully.')">Sync All Data</button> <button class="btn pink" onclick="toast('Hospital-wide emergency protocol activated.')">Emergency Mode</button></div></div>
+
+<div class="hero" style="margin-bottom:18px"><div><div class="eyebrow">LIVE NETWORK OVERVIEW</div><h2>City General Hospital · Super Admin</h2><p>Real-time operational view across every clinical and non-clinical resource.</p><div class="heroStats"><div><b>190</b>beds</div><div><b>24</b>specialists</div><div><b>48</b>machines</div><div><b>12</b>facilities</div><div><b>99.2%</b>data sync</div></div></div></div>
+
+
+
+<div id="admin-overview" class="adminPane">
+<div class="grid6">
+<div class="card kpi"><small>TOTAL BEDS</small><strong>190</strong><span class="trend">148 occupied</span></div><div class="card kpi"><small>ICU BEDS</small><strong>24</strong><span class="trend">8 available</span></div><div class="card kpi"><small>DOCTORS</small><strong>46</strong><span class="trend">31 on duty</span></div><div class="card kpi"><small>MACHINES</small><strong>48</strong><span class="trend">44 operational</span></div><div class="card kpi"><small>LIVE QUEUE</small><strong>126</strong><span class="busy">+18 rising</span></div><div class="card kpi"><small>EMERGENCY</small><strong class="danger">HIGH</strong><span class="danger">18 critical cases</span></div>
+</div>
+<div class="section two">
+<div class="card"><span class="tag">EMERGENCY CONTROL</span><h2>Live Emergency Status</h2><div class="three"><div><small>WAITING</small><div class="metric">42</div></div><div><small>AMBULANCES</small><div class="metric">7</div></div><div><small>ICU READY</small><div class="metric">8</div></div></div><p style="font-size:11px;color:var(--muted)">AI predicts a 27% surge between 6–9 PM. Recommended: activate 3 nurses and reserve 2 ICU beds.</p><button class="btn pink" onclick="show('simulation',document.querySelectorAll('.nav button')[3])">Simulate Emergency →</button></div>
+<div class="card"><span class="tag">TODAY'S CAPACITY</span><h2>Hospital Utilization</h2><div class="factor"><label>Beds <b>78%</b></label><div><i style="width:78%"></i></div></div><div class="factor"><label>ICU <b>91%</b></label><div><i style="width:91%"></i></div></div><div class="factor"><label>OT <b>64%</b></label><div><i style="width:64%"></i></div></div><div class="factor"><label>Diagnostics <b>82%</b></label><div><i style="width:82%"></i></div></div></div>
+</div>
+<div class="section three">
+<div class="card"><span class="tag">FACILITIES</span><h2>12</h2><p style="font-size:11px;color:var(--muted)">Consultation rooms · OTs · Labs · Pharmacy · Blood Bank · Emergency</p></div>
+<div class="card"><span class="tag">SPECIALISTS</span><h2>24</h2><p style="font-size:11px;color:var(--muted)">Cardiology · Neurology · Orthopedics · Pediatrics · Oncology · Radiology</p></div>
+<div class="card"><span class="tag">AI SERVICES</span><h2>8 Active</h2><p style="font-size:11px;color:var(--muted)">Forecasting · Simulation · Optimization · Routing · Explainability</p></div>
+</div>
+</div>
+
+<div id="admin-doctors" class="adminPane" style="display:none">
+<div class="card"><div class="toolbar"><div><span class="tag">46 DOCTORS · 24 SPECIALTISTS</span><h2>Doctor Availability</h2></div><button class="btn pink" onclick="toast('Doctor availability updated from live schedule.')">Refresh Schedule</button></div>
+<table class="dataTable"><thead><tr><th>DOCTOR</th><th>SPECIALTY</th><th>STATUS</th><th>NEXT AVAILABLE</th><th>ROOM</th><th>ACTION</th></tr></thead><tbody>
+<tr><td><b>Dr. Ananya Sharma</b></td><td>Cardiology</td><td class="online">● Available</td><td>10:30 AM – 1:30 PM</td><td>204</td><td><button class="miniBtns" onclick="bookDoctor('Dr. Ananya Sharma')">BOOK</button></td></tr>
+<tr><td><b>Dr. Rohan Mehta</b></td><td>Neurology</td><td class="busy">● In Consultation</td><td>2:15 PM – 5:00 PM</td><td>312</td><td><button class="miniBtns" onclick="bookDoctor('Dr. Rohan Mehta')">BOOK</button></td></tr>
+<tr><td><b>Dr. Priya Kapoor</b></td><td>Pediatrics</td><td class="online">● Available</td><td>11:00 AM – 2:00 PM</td><td>108</td><td><button class="miniBtns" onclick="bookDoctor('Dr. Priya Kapoor')">BOOK</button></td></tr>
+<tr><td><b>Dr. Arjun Singh</b></td><td>Orthopedics</td><td class="online">● Available</td><td>9:30 AM – 12:30 PM</td><td>221</td><td><button class="miniBtns" onclick="bookDoctor('Dr. Arjun Singh')">BOOK</button></td></tr>
+<tr><td><b>Dr. Kavya Iyer</b></td><td>Dermatology</td><td class="busy">● In Consultation</td><td>4:00 PM – 6:30 PM</td><td>119</td><td><button class="miniBtns" onclick="bookDoctor('Dr. Kavya Iyer')">BOOK</button></td></tr>
+<tr><td><b>Dr. Vikram Joshi</b></td><td>Oncology</td><td class="online">● Available</td><td>1:00 PM – 4:00 PM</td><td>405</td><td><button class="miniBtns" onclick="bookDoctor('Dr. Vikram Joshi')">BOOK</button></td></tr>
+<tr><td><b>Dr. Neha Verma</b></td><td>Gynecology</td><td class="online">● Available</td><td>10:00 AM – 1:00 PM</td><td>145</td><td><button class="miniBtns" onclick="bookDoctor('Dr. Neha Verma')">BOOK</button></td></tr>
+<tr><td><b>Dr. Aditya Rao</b></td><td>General Medicine</td><td class="busy">● In Consultation</td><td>3:30 PM – 6:00 PM</td><td>102</td><td><button class="miniBtns" onclick="bookDoctor('Dr. Aditya Rao')">BOOK</button></td></tr>
+<tr><td><b>Dr. Sameer Gupta</b></td><td>Cardiology</td><td class="online">● Available</td><td>12:00 PM – 3:00 PM</td><td>206</td><td><button class="miniBtns" onclick="bookDoctor('Dr. Sameer Gupta')">BOOK</button></td></tr>
+<tr><td><b>Dr. Meera Nair</b></td><td>Radiology</td><td class="online">● Available</td><td>9:00 AM – 12:00 PM</td><td>305</td><td><button class="miniBtns" onclick="bookDoctor('Dr. Meera Nair')">BOOK</button></td></tr>
+<tr><td><b>Dr. Rahul Bansal</b></td><td>Gastroenterology</td><td class="busy">● In Consultation</td><td>1:30 PM – 4:30 PM</td><td>233</td><td><button class="miniBtns" onclick="bookDoctor('Dr. Rahul Bansal')">BOOK</button></td></tr>
+<tr><td><b>Dr. Simran Kaur</b></td><td>Psychiatry</td><td class="online">● Available</td><td>2:00 PM – 5:30 PM</td><td>318</td><td><button class="miniBtns" onclick="bookDoctor('Dr. Simran Kaur')">BOOK</button></td></tr>
+</tbody></table></div>
+<div class="section three"><div class="card"><span class="tag">CARDIOLOGY</span><h2>4 specialists</h2><p style="font-size:10px;color:var(--muted)">Ananya Sharma · Sameer Gupta · Mehul Jain · Riya Shah</p></div><div class="card"><span class="tag">NEUROLOGY</span><h2>3 specialists</h2><p style="font-size:10px;color:var(--muted)">Rohan Mehta · Nitin Arora · Simran Kaur</p></div><div class="card"><span class="tag">SURGERY</span><h2>5 specialists</h2><p style="font-size:10px;color:var(--muted)">General · Cardiac · Neuro · Ortho · Emergency</p></div></div>
+</div>
+
+<div id="admin-machines" class="adminPane" style="display:none">
+<div class="card"><div class="toolbar"><div><span class="tag">48 MEDICAL DEVICES</span><h2>Machines & Equipment</h2></div><button class="btn pink" onclick="toast('Machine telemetry refreshed.')">Refresh Telemetry</button></div>
+<table class="dataTable"><thead><tr><th>MACHINE</th><th>COUNT</th><th>AVAILABLE</th><th>IN USE</th><th>STATUS</th><th>LOCATION</th></tr></thead><tbody>
+<tr><td><b>X-Ray</b></td><td>4</td><td>2</td><td>2</td><td class="online">Operational</td><td>Radiology</td></tr>
+<tr><td><b>MRI Scanner</b></td><td>2</td><td>1</td><td>1</td><td class="online">Operational</td><td>Radiology</td></tr>
+<tr><td><b>CT Scanner</b></td><td>2</td><td>0</td><td>2</td><td class="busy">High Load</td><td>Radiology</td></tr>
+<tr><td><b>Ultrasound</b></td><td>5</td><td>3</td><td>2</td><td class="online">Operational</td><td>Diagnostics</td></tr>
+<tr><td><b>Ventilator</b></td><td>22</td><td>8</td><td>14</td><td class="online">Operational</td><td>ICU</td></tr>
+<tr><td><b>Dialysis Unit</b></td><td>6</td><td>2</td><td>4</td><td class="online">Operational</td><td>Nephrology</td></tr>
+<tr><td><b>ECG Machine</b></td><td>7</td><td>5</td><td>2</td><td class="online">Operational</td><td>Cardiology</td></tr>
+</tbody></table></div></div>
+
+<div id="admin-facilities" class="adminPane" style="display:none">
+<div class="card"><span class="tag">FACILITY ALLOCATION</span><h2>Clinical & Operational Facilities</h2>
+<table class="dataTable"><thead><tr><th>FACILITY</th><th>TOTAL</th><th>AVAILABLE</th><th>OCCUPANCY</th><th>QUEUE</th><th>STATUS</th></tr></thead><tbody>
+<tr><td><b>Consultation Rooms</b></td><td>28</td><td>7</td><td>75%</td><td>42</td><td class="busy">Busy</td></tr>
+<tr><td><b>Operation Theatres</b></td><td>8</td><td>3</td><td>63%</td><td>6</td><td class="online">Normal</td></tr>
+<tr><td><b>Pathology Labs</b></td><td>5</td><td>2</td><td>78%</td><td>18</td><td class="busy">Rising</td></tr>
+<tr><td><b>Pharmacy</b></td><td>4 counters</td><td>1</td><td>86%</td><td>27</td><td class="busy">Busy</td></tr>
+<tr><td><b>Blood Bank</b></td><td>1</td><td>1</td><td>54%</td><td>3</td><td class="online">Normal</td></tr>
+<tr><td><b>Emergency</b></td><td>18 bays</td><td>4</td><td>78%</td><td>42</td><td class="danger">High Load</td></tr>
+<tr><td><b>ICU</b></td><td>24 beds</td><td>8</td><td>67%</td><td>5</td><td class="busy">High Acuity</td></tr>
+</tbody></table></div></div>
+
+<div id="admin-queues" class="adminPane" style="display:none">
+<div class="three">
+<div class="card queueCard"><span class="tag">EMERGENCY</span><div class="queueNum">42</div><p style="font-size:11px;color:var(--muted)">patients waiting · approx <b>18 min</b></p><div class="progress"><i style="width:84%"></i></div></div>
+<div class="card queueCard"><span class="tag">OPD</span><div class="queueNum">58</div><p style="font-size:11px;color:var(--muted)">patients waiting · approx <b>31 min</b></p><div class="progress"><i style="width:72%"></i></div></div>
+<div class="card queueCard"><span class="tag">RADIOLOGY</span><div class="queueNum">18</div><p style="font-size:11px;color:var(--muted)">patients waiting · approx <b>46 min</b></p><div class="progress"><i style="width:91%"></i></div></div>
+</div>
+<div class="section card"><h2>Queue by department</h2><table class="dataTable"><thead><tr><th>DEPARTMENT</th><th>WAITING</th><th>EST. WAIT</th><th>AI STATUS</th></tr></thead><tbody>
+<tr><td>Emergency</td><td>42</td><td>18 min</td><td class="danger">Critical</td></tr><tr><td>Cardiology OPD</td><td>12</td><td>24 min</td><td class="busy">Rising</td></tr><tr><td>General Medicine</td><td>21</td><td>19 min</td><td class="online">Normal</td></tr><tr><td>Radiology</td><td>18</td><td>46 min</td><td class="danger">Bottleneck</td></tr><tr><td>Pharmacy</td><td>27</td><td>14 min</td><td class="busy">Busy</td></tr><tr><td>Pathology</td><td>6</td><td>12 min</td><td class="online">Normal</td></tr></tbody></table></div>
+</div>
+
+<div id="admin-map" class="adminPane" style="display:none">
+<div class="two"><div class="card"><span class="tag">LIVE FLOOR MAP</span><h2>Hospital Layout</h2>
+<div class="map">
+<div class="corridor" style="left:8%;top:47%;width:84%;height:8%"></div><div class="corridor" style="left:47%;top:8%;width:7%;height:84%"></div>
+<div class="room" style="left:6%;top:12%;width:18%"><b>Emergency</b>42 waiting</div><div class="room" style="left:28%;top:12%;width:18%"><b>Radiology</b>18 queue</div><div class="room" style="left:59%;top:12%;width:18%"><b>ICU</b>8 free</div><div class="room" style="left:79%;top:12%;width:15%"><b>Pharmacy</b>27 queue</div>
+<div class="room" style="left:7%;top:66%;width:18%"><b>OPD</b>58 waiting</div><div class="room" style="left:28%;top:66%;width:18%"><b>Pathology</b>6 queue</div><div class="room" style="left:59%;top:66%;width:18%"><b>Operation Theatres</b>3 free</div><div class="room" style="left:79%;top:66%;width:15%"><b>Blood Bank</b>Available</div>
+</div></div>
+<div class="card"><span class="tag">PATIENT VIEW</span><h2>Where should I go?</h2><p style="font-size:12px;color:var(--muted)">Patients can see live queue length and estimated waiting time before entering a department.</p>
+<div class="card" style="box-shadow:none;margin:10px 0"><b>Emergency</b><span style="float:right" class="danger">42 · 18 min</span></div><div class="card" style="box-shadow:none;margin:10px 0"><b>Radiology</b><span style="float:right" class="busy">18 · 46 min</span></div><div class="card" style="box-shadow:none;margin:10px 0"><b>Pharmacy</b><span style="float:right" class="busy">27 · 14 min</span></div><div class="card" style="box-shadow:none;margin:10px 0"><b>General OPD</b><span style="float:right" class="online">21 · 19 min</span></div></div></div>
+</div>
+</section>
+
+
+
+
+
+
+
+
+<section id="queues" class="page">
+<div class="toolbar"><div><div class="eyebrow">PATIENT TRANSPARENCY</div><h1>Live Queue Tracker</h1><div class="backnote">Know your waiting time before you reach the department.</div></div><span class="live">● UPDATES EVERY 30 SEC</span></div>
+<div class="three">
+<div class="card queueCard"><span class="tag">EMERGENCY</span><div class="queueNum">42</div><p>people waiting</p><div class="progress"><i style="width:84%"></i></div><h2 style="margin-top:14px">~18 min</h2><span class="danger">High load</span></div>
+<div class="card queueCard"><span class="tag">GENERAL OPD</span><div class="queueNum">21</div><p>people waiting</p><div class="progress"><i style="width:43%"></i></div><h2 style="margin-top:14px">~19 min</h2><span class="online">Normal</span></div>
+<div class="card queueCard"><span class="tag">RADIOLOGY</span><div class="queueNum">18</div><p>people waiting</p><div class="progress"><i style="width:91%"></i></div><h2 style="margin-top:14px">~46 min</h2><span class="danger">Bottleneck</span></div>
+</div>
+<div class="section card"><h2>Department queue comparison</h2><table class="dataTable"><thead><tr><th>DEPARTMENT</th><th>QUEUE</th><th>EST. WAIT</th><th>RECOMMENDATION</th></tr></thead><tbody>
+<tr><td>Emergency</td><td>42</td><td>18 min</td><td class="danger">High priority</td></tr><tr><td>Cardiology</td><td>12</td><td>24 min</td><td>Arrive 10 min early</td></tr><tr><td>General Medicine</td><td>21</td><td>19 min</td><td class="online">Good time</td></tr><tr><td>Radiology</td><td>18</td><td>46 min</td><td class="busy">Consider later slot</td></tr><tr><td>Pharmacy</td><td>27</td><td>14 min</td><td class="online">Moving quickly</td></tr></tbody></table></div>
+</section>
+
+
+<div class="section card" style="background:linear-gradient(105deg,#f8f9fe,#eef6fa);border:1px solid #dee7ee">
+  <div class="toolbar">
+    <div>
+      <span class="tag">AI DECISION INTELLIGENCE</span>
+      <h2>AI Engine Recommendations</h2>
+      <p style="font-size:11px;color:var(--muted);max-width:650px">
+        MED MORPH continuously analyzes demand, queues, beds, staff, machines and emergency load — then explains <b>what it recommends and why</b>.
+      </p>
+    </div>
+    <button class="btn pink" onclick="show('aiEngine',document.querySelectorAll('.nav button')[1])">Open AI Engine →</button>
+  </div>
+  <div class="three">
+    <div><span class="tag">01 · PREDICT</span><h3>Patient surge</h3><small>+27% expected</small></div>
+    <div><span class="tag">02 · DETECT</span><h3>Radiology bottleneck</h3><small>46 min estimated wait</small></div>
+    <div><span class="tag">03 · ACT</span><h3>Resource shift</h3><small>3 nurses + 2 ICU beds</small></div>
+  </div>
+</div>
+
+
+<section id="aiEngine" class="page">
+<div class="toolbar">
+  <div>
+    <div class="eyebrow">MED MORPH · AI DECISION INTELLIGENCE</div>
+    <h1>AI Engine Recommendations</h1>
+    <div class="backnote">Every recommendation is paired with the operational evidence behind it.</div>
+  </div>
+  <div><span class="live">● AI ENGINE LIVE</span></div>
+</div>
+
+<div class="hero" style="margin-bottom:18px">
+  <div>
+    <div class="eyebrow">DECISION TRANSPARENCY</div>
+    <h2>From hospital data → decision → reason → action.</h2>
+    <p>The AI engine combines demand forecasts, live queues, resource availability, staff capacity, machine utilization and emergency signals to prioritize the safest operational actions.</p>
+    <div class="heroStats">
+      <div><b>8</b>signals analyzed</div>
+      <div><b>6</b>recommendations</div>
+      <div><b>94%</b>confidence</div>
+      <div><b>12 sec</b>last update</div>
+    </div>
+  </div>
+  
+</div>
+
+<div class="section two">
+<div class="card" style="border-left:4px solid #7e95b1">
+  <div class="toolbar"><div><span class="tag">HIGH PRIORITY · 94% CONFIDENCE</span><h2>Activate 3 additional nurses in Emergency</h2></div><button class="btn pink" onclick="aiAction('3 emergency nurses activated')">Apply Recommendation</button></div>
+  <p><b>Why is AI recommending this?</b></p>
+  <ul style="font-size:11px;line-height:1.9;color:var(--muted)">
+    <li>Emergency queue has reached <b>42 patients</b>.</li>
+    <li>AI forecasts a <b>27% patient surge</b> between 6–9 PM.</li>
+    <li>Current emergency capacity is already at <b>78%</b>.</li>
+    <li>Average waiting time is projected to rise from <b>18 → 29 minutes</b>.</li>
+  </ul>
+  <div class="card" style="box-shadow:none;background:#f7fafc;margin-top:12px"><b>Expected impact</b><br><small>Reduce projected emergency wait by ~9 minutes and absorb the predicted surge without opening a new unit.</small></div>
+</div>
+
+<div class="card" style="border-left:4px solid #8f83c8">
+  <div class="toolbar"><div><span class="tag">HIGH PRIORITY · 91% CONFIDENCE</span><h2>Reserve 2 ICU beds</h2></div><button class="btn" onclick="aiAction('2 ICU beds reserved')">Reserve Beds</button></div>
+  <p><b>Why?</b></p>
+  <ul style="font-size:11px;line-height:1.9;color:var(--muted)">
+    <li>Only <b>8 ICU beds</b> are currently available.</li>
+    <li>Emergency demand is trending upward.</li>
+    <li>Ventilator utilization is <b>64%</b>.</li>
+    <li>The engine identifies a high-acuity cluster entering the hospital.</li>
+  </ul>
+  <div class="card" style="box-shadow:none;background:#f7fafc;margin-top:12px"><b>Expected impact</b><br><small>Preserves critical capacity for emergency admissions and reduces the risk of ICU saturation.</small></div>
+</div>
+</div>
+
+<div class="section two">
+<div class="card" style="border-left:4px solid #d69a72">
+  <span class="tag">BOTTLENECK · 89% CONFIDENCE</span><h2>Re-route Radiology demand</h2>
+  <p><b>Why is AI recommending this?</b></p>
+  <p style="font-size:11px;color:var(--muted);line-height:1.8">CT scanners are at high load, with <b>18 patients</b> waiting and an estimated <b>46-minute</b> queue. One ultrasound and one X-Ray unit are currently underutilized. AI recommends shifting suitable diagnostic cases to available capacity.</p>
+  <button class="miniBtns" onclick="aiAction('Radiology cases re-routed')">Apply Smart Routing</button>
+</div>
+<div class="card" style="border-left:4px solid #7bb39a">
+  <span class="tag">EFFICIENCY · 87% CONFIDENCE</span><h2>Open 2 additional consultation rooms</h2>
+  <p><b>Why?</b></p>
+  <p style="font-size:11px;color:var(--muted);line-height:1.8">OPD queue is <b>58 patients</b>, while 7 consultation rooms are currently available. Two rooms can be activated without affecting procedure capacity, reducing OPD waiting time by an estimated <b>11 minutes</b>.</p>
+  <button class="miniBtns" onclick="aiAction('2 consultation rooms opened')">Open Rooms</button>
+</div>
+</div>
+
+<div class="section card">
+<div class="toolbar"><div><span class="tag">AI EXPLANATION LAYER</span><h2>Why the engine chose these actions</h2></div><span style="font-size:10px;color:var(--muted)">Explainable · auditable · human controlled</span></div>
+<div class="three">
+<div><b>Demand signal</b><p style="font-size:10px;color:var(--muted)">Historical OPD + live arrivals + time-of-day patterns</p><strong>34%</strong></div>
+<div><b>Capacity signal</b><p style="font-size:10px;color:var(--muted)">Beds + rooms + machines + staff currently available</p><strong>28%</strong></div>
+<div><b>Risk signal</b><p style="font-size:10px;color:var(--muted)">Emergency severity + ICU pressure + queue growth</p><strong>38%</strong></div>
+</div>
+<p style="font-size:10px;color:var(--muted);margin-top:18px"><b>Human-in-the-loop:</b> AI recommends and explains. Authorized hospital administrators approve or reject actions.</p>
+</div>
+</section>
+
+<section id="emergency" class="page">
+<div class="toolbar">
+  <div>
+    <div class="eyebrow">MED MORPH · EMERGENCY OPERATIONS</div>
+    <h1>Emergency Command Module</h1>
+    <div class="backnote">Real-time emergency capacity, triage, ambulances, ICU readiness and response coordination.</div>
+  </div>
+  <div><button class="btn pink" onclick="emergencyProtocol()">Activate Emergency Protocol</button></div>
+</div>
+
+<div class="hero" style="margin-bottom:18px">
+<div>
+  <div class="eyebrow">🚨 LIVE CRITICAL OPERATIONS</div>
+  <h2>Emergency load is high — AI is coordinating capacity.</h2>
+  <p>MED MORPH continuously monitors arrivals, triage severity, emergency bays, ambulances, ICU capacity and response times.</p>
+  <div class="heroStats">
+    <div><b>42</b>waiting</div><div><b>18 min</b>avg wait</div><div><b>7</b>ambulances</div><div><b>8</b>ICU free</div>
+  </div>
+</div>
+<div style="font-size:70px;opacity:.15">🚨</div>
+</div>
+
+<div class="grid6">
+<div class="card kpi"><small>CRITICAL</small><strong class="danger">18</strong><span>immediate care</span></div>
+<div class="card kpi"><small>URGENT</small><strong>16</strong><span>within 30 min</span></div>
+<div class="card kpi"><small>STABLE</small><strong>8</strong><span>under observation</span></div>
+<div class="card kpi"><small>EMERGENCY BAYS</small><strong>14/18</strong><span>4 available</span></div>
+<div class="card kpi"><small>AMBULANCES</small><strong>7</strong><span>3 inbound</span></div>
+<div class="card kpi"><small>RESPONSE</small><strong>8 min</strong><span>target ≤ 10 min</span></div>
+</div>
+
+<div class="section two">
+<div class="card">
+<span class="tag">LIVE TRIAGE BOARD</span><h2>Emergency Cases</h2>
+<table class="dataTable"><thead><tr><th>CASE</th><th>PRIORITY</th><th>WAIT</th><th>DESTINATION</th><th>STATUS</th></tr></thead><tbody>
+<tr><td><b>ER-1042</b></td><td class="danger">CRITICAL</td><td>2 min</td><td>ICU-04</td><td class="danger">Immediate</td></tr>
+<tr><td><b>ER-1038</b></td><td class="danger">CRITICAL</td><td>5 min</td><td>Trauma Bay 2</td><td class="busy">In treatment</td></tr>
+<tr><td><b>ER-1045</b></td><td class="busy">URGENT</td><td>11 min</td><td>Emergency Bay 8</td><td>Waiting</td></tr>
+<tr><td><b>ER-1049</b></td><td class="busy">URGENT</td><td>16 min</td><td>Emergency Bay 11</td><td>Waiting</td></tr>
+<tr><td><b>ER-1051</b></td><td>STABLE</td><td>21 min</td><td>Observation</td><td class="online">Stable</td></tr>
+</tbody></table>
+</div>
+<div class="card">
+<span class="tag">AI EMERGENCY PLAN</span><h2>Recommended Actions</h2>
+<div class="card" style="box-shadow:none;background:#f7fafc;margin:10px 0"><b>1 · Activate 3 nurses</b><br><small>Projected wait reduction: 9 min</small></div>
+<div class="card" style="box-shadow:none;background:#f7fafc;margin:10px 0"><b>2 · Reserve 2 ICU beds</b><br><small>Protects critical capacity</small></div>
+<div class="card" style="box-shadow:none;background:#f7fafc;margin:10px 0"><b>3 · Prepare CT priority slot</b><br><small>One critical case inbound</small></div>
+<div class="card" style="box-shadow:none;background:#f7fafc;margin:10px 0"><b>4 · Alert blood bank</b><br><small>Maintain trauma readiness</small></div>
+<button class="btn pink" style="width:100%;margin-top:8px" onclick="show('aiEngine',document.querySelectorAll('.nav button')[1])">See Why AI Recommends →</button>
+</div>
+</div>
+
+<div class="section card">
+<div class="toolbar"><div><span class="tag">AMBULANCE NETWORK</span><h2>Incoming Emergency Units</h2></div><span class="live">● GPS LIVE</span></div>
+<table class="dataTable"><thead><tr><th>UNIT</th><th>ETA</th><th>CASE</th><th>SEVERITY</th><th>DESTINATION</th></tr></thead><tbody>
+<tr><td>AMB-07</td><td>4 min</td><td>Trauma</td><td class="danger">Critical</td><td>Trauma Bay 1</td></tr>
+<tr><td>AMB-12</td><td>7 min</td><td>Cardiac</td><td class="danger">Critical</td><td>Cardiology</td></tr>
+<tr><td>AMB-03</td><td>11 min</td><td>Respiratory</td><td class="busy">Urgent</td><td>Emergency</td></tr>
+</tbody></table>
+</div>
+</section>
+
+
+
+
+
+<section id="adminDash" class="page">
+<div class="toolbar">
+  <div>
+    <div class="eyebrow">MED MORPH · SUPER ADMIN</div>
+    <h1>Admin Dashboard</h1>
+    <div class="backnote">Hospital-wide control center for capacity, specialists, equipment, facilities, queues and emergency operations.</div>
+  </div>
+  <span class="live">● LIVE DATA</span>
+</div>
+
+
+
+<!-- OVERVIEW -->
+<div id="admin-overview" class="adminTabPage active">
+  <div class="grid6 adminKpis">
+    <div class="card kpi"><small>PATIENTS ARRIVED TODAY</small><strong>1,284</strong><span class="trend">↑ 8.4%</span></div>
+    <div class="card kpi"><small>AVG WAIT TIME</small><strong>24 min</strong><span class="trend">↓ 6 min</span></div>
+    <div class="card kpi"><small>EMERGENCY TODAY</small><strong>146</strong><span class="busy">↑ 12%</span></div>
+    <div class="card kpi"><small>OPD LOAD NOW</small><strong>78%</strong><span class="trend">Normal</span></div>
+    <div class="card kpi"><small>BEDS OCCUPIED</small><strong>148/190</strong><span>78%</span></div>
+    <div class="card kpi"><small>DOCTORS ON DUTY</small><strong>31/46</strong><span>67%</span></div>
+  </div>
+
+  <div class="section two">
+    <div class="card chartCard">
+      <div class="toolbar"><div><span class="tag">PATIENT FLOW</span><h2>Patients Arrived — Today</h2></div><span class="mutedText">Hourly</span></div>
+      <div class="barChart" id="patientBars"></div>
+    </div>
+    <div class="card chartCard">
+      <div class="toolbar"><div><span class="tag">DEPARTMENT LOAD</span><h2>OPD Load by Department</h2></div><span class="mutedText">Now</span></div>
+      <div class="hBars">
+        <div><span>General Medicine</span><i style="width:82%"></i><b>82%</b></div>
+        <div><span>Cardiology</span><i style="width:74%"></i><b>74%</b></div>
+        <div><span>Orthopedics</span><i style="width:69%"></i><b>69%</b></div>
+        <div><span>Pediatrics</span><i style="width:61%"></i><b>61%</b></div>
+        <div><span>Dermatology</span><i style="width:48%"></i><b>48%</b></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section card">
+    <div class="toolbar"><div><span class="tag">WEEKLY PLANNING</span><h2>Volume vs Capacity</h2></div><span class="mutedText">Last 7 days</span></div>
+    <div class="weeklyChart">
+      <div class="weekCol"><span style="height:55%"></span><b>Mon</b></div>
+      <div class="weekCol"><span style="height:68%"></span><b>Tue</b></div>
+      <div class="weekCol"><span style="height:63%"></span><b>Wed</b></div>
+      <div class="weekCol"><span style="height:81%"></span><b>Thu</b></div>
+      <div class="weekCol"><span style="height:76%"></span><b>Fri</b></div>
+      <div class="weekCol"><span style="height:88%"></span><b>Sat</b></div>
+      <div class="weekCol"><span style="height:52%"></span><b>Sun</b></div>
+    </div>
+    <div class="legend"><span>■ Patient volume</span><span>□ Available capacity</span></div>
+  </div>
+
+  <div class="section two">
+    <div class="card"><span class="tag">TODAY'S TREND</span><h2>Peak expected: 6–9 PM</h2><p class="mutedText">Patient arrivals are projected to rise by 27%. Current capacity can absorb the forecast.</p></div>
+    <div class="card"><span class="tag">ADMIN ATTENTION</span><h2>2 areas need review</h2><p class="mutedText">Emergency queue and Radiology wait time are above the preferred threshold.</p></div>
+  </div>
+</div>
+
+<!-- BEDS -->
+<div id="admin-beds" class="adminTabPage">
+  <div class="section card">
+    <div class="toolbar"><div><span class="tag">BED ALLOCATION</span><h2>Ward-wise Bed Status</h2></div><span class="live">● 190 TOTAL</span></div>
+    <table class="dataTable">
+      <thead><tr><th>WARD</th><th>TOTAL</th><th>OCCUPIED</th><th>AVAILABLE</th><th>RESERVED</th><th>OCCUPANCY</th></tr></thead>
+      <tbody>
+        <tr><td><b>General Medicine</b></td><td>32</td><td>26</td><td>4</td><td>2</td><td>81%</td></tr>
+        <tr><td><b>General Surgery</b></td><td>24</td><td>18</td><td>4</td><td>2</td><td>75%</td></tr>
+        <tr><td><b>Cardiology</b></td><td>18</td><td>15</td><td>2</td><td>1</td><td>83%</td></tr>
+        <tr><td><b>Neurology</b></td><td>16</td><td>12</td><td>3</td><td>1</td><td>75%</td></tr>
+        <tr><td><b>Orthopedics</b></td><td>20</td><td>15</td><td>4</td><td>1</td><td>75%</td></tr>
+        <tr><td><b>Pediatrics</b></td><td>18</td><td>13</td><td>4</td><td>1</td><td>72%</td></tr>
+        <tr><td><b>Gynecology</b></td><td>16</td><td>12</td><td>3</td><td>1</td><td>75%</td></tr>
+        <tr><td><b>Oncology</b></td><td>14</td><td>12</td><td>1</td><td>1</td><td>86%</td></tr>
+        <tr><td><b>ICU</b></td><td>24</td><td>16</td><td>6</td><td>2</td><td>67%</td></tr>
+        <tr><td><b>Emergency</b></td><td>8</td><td>7</td><td>1</td><td>0</td><td>88%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="section three">
+    <div class="card"><span class="tag">OCCUPIED</span><h2>146</h2><small>77% of total beds</small></div>
+    <div class="card"><span class="tag">AVAILABLE</span><h2>32</h2><small>Ready for allocation</small></div>
+    <div class="card"><span class="tag">RESERVED</span><h2>11</h2><small>Pre-allocated</small></div>
+  </div>
+</div>
+
+<!-- SPECIALISTS -->
+<div id="admin-specialists" class="adminTabPage">
+  <div class="section two">
+    <div class="card"><span class="tag">SPECIALIST LOAD</span><h2>20 Specialists</h2><p class="mutedText">Live appointment load and today's utilization.</p></div>
+    <div class="card"><span class="tag">APPOINTMENTS TODAY</span><h2>386</h2><p class="mutedText">312 completed · 74 upcoming</p></div>
+  </div>
+  <div class="section card">
+    <div class="toolbar"><div><span class="tag">DOCTOR WORKLOAD</span><h2>Specialist Load & Appointments</h2></div><span class="mutedText">Today</span></div>
+    <table class="dataTable">
+      <thead><tr><th>DOCTOR</th><th>SPECIALTY</th><th>APPOINTMENTS</th><th>COMPLETED</th><th>UPCOMING</th><th>LOAD</th></tr></thead>
+      <tbody>
+        <tr><td><b>Dr. Ananya Sharma</b></td><td>Cardiology</td><td>24</td><td>18</td><td>6</td><td>82%</td></tr>
+        <tr><td><b>Dr. Rohan Mehta</b></td><td>Neurology</td><td>21</td><td>15</td><td>6</td><td>78%</td></tr>
+        <tr><td><b>Dr. Priya Kapoor</b></td><td>Pediatrics</td><td>19</td><td>16</td><td>3</td><td>72%</td></tr>
+        <tr><td><b>Dr. Arjun Singh</b></td><td>Orthopedics</td><td>22</td><td>17</td><td>5</td><td>80%</td></tr>
+        <tr><td><b>Dr. Kavya Iyer</b></td><td>Dermatology</td><td>16</td><td>12</td><td>4</td><td>64%</td></tr>
+        <tr><td><b>Dr. Vikram Joshi</b></td><td>Oncology</td><td>15</td><td>12</td><td>3</td><td>71%</td></tr>
+        <tr><td><b>Dr. Neha Verma</b></td><td>Gynecology</td><td>20</td><td>15</td><td>5</td><td>76%</td></tr>
+        <tr><td><b>Dr. Aditya Rao</b></td><td>General Medicine</td><td>28</td><td>21</td><td>7</td><td>91%</td></tr>
+        <tr><td><b>Dr. Sameer Gupta</b></td><td>Cardiology</td><td>18</td><td>14</td><td>4</td><td>68%</td></tr>
+        <tr><td><b>Dr. Meera Nair</b></td><td>Radiology</td><td>17</td><td>13</td><td>4</td><td>65%</td></tr>
+        <tr><td><b>Dr. Rahul Bansal</b></td><td>Gastroenterology</td><td>20</td><td>14</td><td>6</td><td>77%</td></tr>
+        <tr><td><b>Dr. Simran Kaur</b></td><td>Psychiatry</td><td>14</td><td>11</td><td>3</td><td>58%</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- MACHINES -->
+<div id="admin-machines" class="adminTabPage">
+  <div class="section three">
+    <div class="card"><span class="tag">15 MACHINES</span><h2>13 Active</h2><small>87% operational</small></div>
+    <div class="card"><span class="tag">IN USE</span><h2>9</h2><small>Currently serving patients</small></div>
+    <div class="card"><span class="tag">MAINTENANCE</span><h2>2</h2><small>Scheduled / offline</small></div>
+  </div>
+  <div class="section card">
+    <table class="dataTable">
+      <thead><tr><th>MACHINE</th><th>TOTAL</th><th>IN USE</th><th>AVAILABLE</th><th>STATUS</th></tr></thead>
+      <tbody>
+        <tr><td><b>MRI Scanner</b></td><td>2</td><td>1</td><td>1</td><td class="online">Operational</td></tr>
+        <tr><td><b>CT Scanner</b></td><td>2</td><td>2</td><td>0</td><td class="busy">High Load</td></tr>
+        <tr><td><b>X-Ray</b></td><td>3</td><td>2</td><td>1</td><td class="online">Operational</td></tr>
+        <tr><td><b>Ultrasound</b></td><td>2</td><td>1</td><td>1</td><td class="online">Operational</td></tr>
+        <tr><td><b>Ventilator</b></td><td>22</td><td>14</td><td>8</td><td class="online">Operational</td></tr>
+        <tr><td><b>Dialysis Unit</b></td><td>4</td><td>3</td><td>1</td><td class="online">Operational</td></tr>
+        <tr><td><b>ECG Machine</b></td><td>4</td><td>2</td><td>2</td><td class="online">Operational</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- FACILITIES -->
+<div id="admin-facilities" class="adminTabPage">
+  <div class="section card">
+    <div class="toolbar"><div><span class="tag">FACILITY UTILIZATION</span><h2>Hospital Facilities</h2></div><span class="mutedText">Live allocation</span></div>
+    <table class="dataTable">
+      <thead><tr><th>FACILITY</th><th>TOTAL</th><th>IN USE</th><th>AVAILABLE</th><th>UTILIZATION</th></tr></thead>
+      <tbody>
+        <tr><td><b>Consultation Rooms</b></td><td>18</td><td>11</td><td>7</td><td>61%</td></tr>
+        <tr><td><b>Operation Theatres</b></td><td>8</td><td>5</td><td>3</td><td>63%</td></tr>
+        <tr><td><b>Pathology Labs</b></td><td>6</td><td>4</td><td>2</td><td>67%</td></tr>
+        <tr><td><b>Pharmacy</b></td><td>3 counters</td><td>2</td><td>1</td><td>67%</td></tr>
+        <tr><td><b>Blood Bank</b></td><td>1</td><td>1</td><td>—</td><td>Active</td></tr>
+        <tr><td><b>Emergency Bays</b></td><td>18</td><td>14</td><td>4</td><td>78%</td></tr>
+        <tr><td><b>ICU</b></td><td>24</td><td>16</td><td>8</td><td>67%</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- LIVE QUEUE -->
+<div id="admin-liveQueue" class="adminTabPage">
+  <div class="section three">
+    <div class="card"><span class="tag">LONGEST WAIT</span><h2>46 min</h2><small>Radiology</small></div>
+    <div class="card"><span class="tag">TOTAL WAITING</span><h2>138</h2><small>Across departments</small></div>
+    <div class="card"><span class="tag">AVG WAIT</span><h2>24 min</h2><small>Hospital-wide</small></div>
+  </div>
+  <div class="section card">
+    <table class="dataTable">
+      <thead><tr><th>QUEUE</th><th>WAITING</th><th>AVG WAIT</th><th>STATUS</th></tr></thead>
+      <tbody>
+        <tr><td><b>General OPD</b></td><td>42</td><td>19 min</td><td class="online">Normal</td></tr>
+        <tr><td><b>Emergency</b></td><td>42</td><td>18 min</td><td class="busy">Elevated</td></tr>
+        <tr><td><b>Radiology</b></td><td>18</td><td>46 min</td><td class="danger">High</td></tr>
+        <tr><td><b>Pharmacy</b></td><td>21</td><td>14 min</td><td class="online">Normal</td></tr>
+        <tr><td><b>Laboratory</b></td><td>15</td><td>23 min</td><td class="online">Normal</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- EMERGENCY -->
+<div id="admin-adminEmergency" class="adminTabPage">
+  <div class="section four">
+    <div class="card kpi"><small>EMERGENCY TODAY</small><strong>146</strong><span>cases</span></div>
+    <div class="card kpi"><small>CRITICAL</small><strong class="danger">18</strong><span>immediate care</span></div>
+    <div class="card kpi"><small>AMBULANCES</small><strong>7</strong><span>3 inbound</span></div>
+    <div class="card kpi"><small>ICU FREE</small><strong>8</strong><span>available</span></div>
+  </div>
+  <div class="section two">
+    <div class="card"><span class="tag">CURRENT LOAD</span><h2>42 waiting · 18 min avg</h2><p class="mutedText">Emergency demand is elevated but within operational capacity.</p></div>
+    <div class="card"><span class="tag">CONTROL</span><h2>Emergency module active</h2><button class="btn pink" onclick="show('emergency',document.querySelectorAll('.nav button')[2])">Open Emergency Command →</button></div>
+  </div>
+</div>
+</section>
+
+
+
+<section id="patients" class="page">
+<div class="toolbar">
+  <div><div class="eyebrow">PATIENT MANAGEMENT</div><h1>Live Patient Records</h1><div class="backnote">A unified view of patients, appointments, doctors, queues and current care status.</div></div>
+  <span class="live">● 5 LIVE PATIENTS</span>
+</div>
+<div class="grid6">
+<div class="card kpi"><small>TOTAL PATIENTS</small><strong>5</strong><span>active records</span></div>
+<div class="card kpi"><small>WAITING</small><strong>3</strong><span>across departments</span></div>
+<div class="card kpi"><small>IN CONSULTATION</small><strong>1</strong><span>currently active</span></div>
+<div class="card kpi"><small>CRITICAL</small><strong class="danger">1</strong><span>emergency</span></div>
+<div class="card kpi"><small>APPOINTMENTS</small><strong>4</strong><span>today</span></div>
+<div class="card kpi"><small>AVG WAIT</small><strong>18 min</strong><span>all OPD</span></div>
+</div>
+<div class="section card">
+<span class="tag">LIVE PATIENT BOARD</span><h2>Patient Journey</h2>
+<table class="dataTable">
+<thead><tr><th>PATIENT</th><th>AGE</th><th>VISIT</th><th>DOCTOR</th><th>STATUS</th><th>WAIT / LOCATION</th></tr></thead>
+<tbody>
+<tr><td><b>Aarav Malhotra</b></td><td>42</td><td>Cardiology</td><td>Dr. Ananya Sharma</td><td class="busy">In Consultation</td><td>Room 204</td></tr>
+<tr><td><b>Riya Sharma</b></td><td>28</td><td>General Medicine</td><td>Dr. Aditya Rao</td><td class="online">Waiting</td><td>12 min · OPD</td></tr>
+<tr><td><b>Kabir Meena</b></td><td>9</td><td>Pediatrics</td><td>Dr. Priya Kapoor</td><td class="online">Waiting</td><td>18 min · Room 108</td></tr>
+<tr><td><b>Mehak Jain</b></td><td>56</td><td>Radiology</td><td>Dr. Meera Nair</td><td class="busy">Diagnostic Queue</td><td>31 min · CT</td></tr>
+<tr><td><b>Vivek Sharma</b></td><td>67</td><td>Emergency</td><td>Emergency Team</td><td class="danger">Critical</td><td>Trauma Bay 2</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section two">
+<div class="card"><span class="tag">PATIENT SAFETY</span><h2>AI Alerts</h2><p style="font-size:11px;color:var(--muted)">Vivek Sharma requires immediate trauma response. ICU bed reservation has been triggered by the emergency module.</p><button class="btn pink" onclick="show('emergency',document.querySelectorAll('.nav button')[5])">Open Emergency →</button></div>
+<div class="card"><span class="tag">PATIENT EXPERIENCE</span><h2>Estimated Waiting</h2><p style="font-size:11px;color:var(--muted)">Patients receive live queue estimates so they can plan arrival and reduce unnecessary waiting inside the hospital.</p><button class="btn" onclick="show('queues',document.querySelectorAll('.nav button')[4])">View Queues →</button></div>
+</div>
+</section>
+
+<div class="footerNote">MED MORPH · AI Hospital Intelligence · Prototype for Smart India Hackathon 2026</div>
+</main></div>
+<script>
+function show(id,btn){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));if(btn)btn.classList.add('active');window.scrollTo(0,0)}
+function runSim(){
+let s=+document.getElementById('surge').value,st=+document.getElementById('staff').value,ic=+document.getElementById('icu').value,amb=+document.getElementById('amb').value;
+let bed=Math.min(99,Math.round(74+s*.55+st*.18+ic*.15));
+let wait=Math.round(18+s*.65+st*.45+ic*.3+(100-amb)*.12);
+let beds=Math.max(1,Math.round(18-ic*.45-s*.08));
+let resp=Math.round(8+s*.18+st*.12+ic*.08+(100-amb)*.08);
+simBed.textContent=bed+'%';simWait.textContent=wait+' min';simICU.textContent=beds;simResp.textContent=resp+' min';
+simState.textContent=bed>=90?'CRITICAL':bed>=82?'UNDER PRESSURE':'MANAGEABLE';
+simState.className=bed>=90?'critical':'';
+document.getElementById('plan').style.display='block';
+document.getElementById('simExplanation').textContent=`The simulation processed a ${s}% patient surge, ${st}% staff absence, ${ic}% ICU reduction and ${amb}% ambulance availability.`;
+document.getElementById('simQueue').textContent=Math.max(12,Math.round(24+s*.75+st*.5))+' patients';
+}
+function stabilize(){document.getElementById('homeWait').textContent='10m';document.getElementById('homeUtil').textContent='91%';alert('AI plan applied. Hospital stabilized successfully.');}
+function applyResource(){document.getElementById('resMetric').textContent='68%';document.getElementById('resWait').textContent='18m';alert('Optimal resource allocation applied: 3 nurses and 6 beds moved to Emergency.')}
+
+function toast(msg){let t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),2500)}
+
+(function(){
+ const vals=[35,48,42,58,72,65,84,92,70,88,102,96];
+ const el=document.getElementById('patientBars');
+ if(el) el.innerHTML=vals.map((v,i)=>`<span title="${v} arrivals" style="height:${v}%"></span>`).join('');
+})();
+</script>
+
+<script>
+function adminDashTab(id,btn){
+  document.querySelectorAll('#adminDash .subpage').forEach(x=>x.classList.remove('active'));
+  const target=document.getElementById('adminDash-'+id);
+  if(target) target.classList.add('active');
+  document.querySelectorAll('#adminDash .subnav button').forEach(x=>x.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+}
+function adminAction(msg){toast(msg)}
+function openAdminDetail(type){
+  const data={
+    opd:{parent:'Operations',title:'OPD Patient Flow',tag:'OPD LIVE FLOW',desc:'Consultation demand, doctors and waiting patients.',table:'Live OPD Queue',head:['QUEUE','PATIENTS','WAIT','DOCTORS'],rows:[['General Medicine','21','19 min','6'],['Cardiology','12','24 min','4'],['Pediatrics','9','18 min','3'],['Orthopedics','8','27 min','3'],['Dermatology','8','21 min','2']],metrics:[['WAITING','58'],['AVG WAIT','31 min'],['ROOMS FREE','7']]},
+    emergency:{parent:'Operations',title:'Emergency Operations',tag:'EMERGENCY LIVE',desc:'Triage severity, bays and response capacity.',table:'Emergency Cases',head:['PRIORITY','CASES','WAIT','BAYS'],rows:[['Critical','18','5 min','2'],['Urgent','16','16 min','1'],['Stable','8','21 min','1']],metrics:[['WAITING','42'],['ICU FREE','8'],['AMBULANCES','7']]},
+    radiology:{parent:'Operations',title:'Radiology Bottleneck',tag:'DIAGNOSTICS LIVE',desc:'Imaging capacity and AI-detected bottlenecks.',table:'Imaging Resources',head:['MACHINE','TOTAL','AVAILABLE','QUEUE'],rows:[['MRI Scanner','2','1','5'],['CT Scanner','2','0','9'],['X-Ray','4','2','4'],['Ultrasound','5','3','0']],metrics:[['QUEUE','18'],['EST. WAIT','46 min'],['AI RISK','HIGH']]},
+    machines:{parent:'Resources',title:'Machine Control',tag:'MACHINE TELEMETRY',desc:'All major diagnostic and life-support equipment.',table:'Machine Status',head:['MACHINE','TOTAL','ONLINE','STATUS'],rows:[['MRI Scanner','2','2','Normal'],['CT Scanner','2','2','High Load'],['X-Ray','4','4','Normal'],['Ventilator','22','22','Normal'],['Dialysis Unit','6','6','Normal'],['ECG Machine','7','6','1 Service']],metrics:[['ONLINE','44'],['IN SERVICE','4'],['UTILIZATION','82%']]},
+    doctors:{parent:'Resources',title:'Doctor Roster',tag:'STAFF LIVE STATUS',desc:'Doctor availability and current duty status.',table:'Doctor Availability',head:['DOCTOR','SPECIALTY','STATUS','NEXT SLOT'],rows:[['Dr. Ananya Sharma','Cardiology','Available','10:30 AM'],['Dr. Rohan Mehta','Neurology','In Consultation','2:15 PM'],['Dr. Priya Kapoor','Pediatrics','Available','11:00 AM'],['Dr. Arjun Singh','Orthopedics','Available','9:30 AM'],['Dr. Meera Nair','Radiology','Available','9:00 AM']],metrics:[['TOTAL','46'],['ON DUTY','31'],['AVAILABLE','18']]},
+    facilities:{parent:'Resources',title:'Facility Allocation',tag:'FACILITY CONTROL',desc:'Rooms, theatres, labs and critical hospital facilities.',table:'Facility Status',head:['FACILITY','TOTAL','FREE','OCCUPANCY'],rows:[['Consultation Rooms','28','7','75%'],['Operation Theatres','8','3','63%'],['Pathology Labs','5','2','78%'],['Pharmacy Counters','4','1','86%'],['Blood Bank','1','1','54%'],['Emergency Bays','18','4','78%']],metrics:[['FACILITIES','12'],['FREE SPACES','18'],['AVG LOAD','72%']]}
+  };
+  const d=data[type]||data.opd;
+  document.querySelectorAll('#adminDash .subpage').forEach(x=>x.classList.remove('active'));
+  document.getElementById('adminDash-detail').classList.add('active');
+  document.querySelectorAll('#adminDash .subnav button').forEach(x=>x.classList.remove('active'));
+  document.getElementById('detailParent').textContent=d.parent;
+  document.getElementById('detailTitle').textContent=d.title;
+  document.getElementById('detailTag').textContent=d.tag;
+  document.getElementById('detailHeading').textContent=d.title;
+  document.getElementById('detailDescription').textContent=d.desc;
+  document.getElementById('detailTableTitle').textContent=d.table;
+  document.getElementById('detailHead').innerHTML=d.head.map(x=>'<th>'+x+'</th>').join('');
+  document.getElementById('detailBody').innerHTML=d.rows.map(r=>'<tr>'+r.map((x,i)=>'<td>'+(i===0?'<b>'+x+'</b>':x)+'</td>').join('')+'</tr>').join('');
+  document.getElementById('detailMetrics').innerHTML=d.metrics.map(m=>'<div class="card kpi"><small>'+m[0]+'</small><strong>'+m[1]+'</strong></div>').join('');
+}
+</script>
+
+
+<script id="super-admin-tab-handler">
+(function(){
+  function activateSuperAdminTab(tab, btn){
+    var root = document.getElementById('admin');
+    if(!root) return;
+
+    var panels = root.querySelectorAll('[data-admin-panel]');
+    if(!panels.length){
+      // Fallback for existing sections that use IDs based on tab names.
+      panels = root.querySelectorAll('.admin-panel, .admin-tab-panel, .adminTabPage');
+    }
+
+    panels.forEach(function(p){ p.classList.remove('active'); p.style.display='none'; });
+
+    var target = root.querySelector('[data-admin-panel="'+tab+'"]');
+    if(!target) target = root.querySelector('#admin-panel-'+tab);
+    if(!target) target = root.querySelector('#super-'+tab);
+    if(target){
+      target.classList.add('active');
+      target.style.display='block';
+    }
+
+    root.querySelectorAll('.admin-main-tabs button, .adminTabs button').forEach(function(b){
+      b.classList.remove('active');
+    });
+    if(btn) btn.classList.add('active');
+  }
+
+  document.addEventListener('click', function(e){
+    var btn = e.target.closest('#admin .admin-main-tabs button, #admin .adminTabs button');
+    if(!btn) return;
+
+    var explicit = btn.getAttribute('data-admin-tab');
+    var label = btn.textContent.trim().toLowerCase();
+    var tab = explicit;
+
+    if(!tab){
+      if(label.includes('overview')) tab='overview';
+      else if(label.includes('beds')) tab='beds';
+      else if(label.includes('specialist')) tab='specialists';
+      else if(label.includes('machine')) tab='machines';
+      else if(label.includes('facilit')) tab='facilities';
+      else if(label.includes('queue')) tab='queue';
+      else if(label.includes('emergency')) tab='emergency';
+    }
+
+    if(tab){
+      e.preventDefault();
+      e.stopPropagation();
+      activateSuperAdminTab(tab, btn);
+    }
+  }, true);
+
+  // Convert existing Super Admin tab buttons to explicit targets.
+  function prepare(){
+    var root=document.getElementById('admin');
+    if(!root) return;
+    root.querySelectorAll('.admin-main-tabs button, .adminTabs button').forEach(function(btn){
+      if(btn.dataset.adminTab) return;
+      var t=btn.textContent.trim().toLowerCase();
+      if(t.includes('overview')) btn.dataset.adminTab='overview';
+      else if(t.includes('beds')) btn.dataset.adminTab='beds';
+      else if(t.includes('specialist')) btn.dataset.adminTab='specialists';
+      else if(t.includes('machine')) btn.dataset.adminTab='machines';
+      else if(t.includes('facilit')) btn.dataset.adminTab='facilities';
+      else if(t.includes('queue')) btn.dataset.adminTab='queue';
+      else if(t.includes('emergency')) btn.dataset.adminTab='emergency';
+    });
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',prepare);
+  else prepare();
+})();
+</script>
+
+
+<script>
+function adminSuperTab(id,btn){
+  const root=document.getElementById('admin');
+  if(!root) return false;
+  root.querySelectorAll('.adminPane').forEach(function(p){
+    p.style.display='none';
+    p.classList.remove('active');
+  });
+  const target=root.querySelector('#admin-'+id);
+  if(target){
+    target.style.display='block';
+    target.classList.add('active');
+  }
+  root.querySelectorAll('.adminTabs button').forEach(function(b){b.classList.remove('active');});
+  if(btn) btn.classList.add('active');
+  return false;
+}
+</script>
+
+<script id="landing-navigation">
+function enterMedMorph(){
+  var landing=document.getElementById('landing');
+  var app=document.getElementById('mainApp');
+  if(landing) landing.style.display='none';
+  if(app) app.style.display='flex';
+  window.scrollTo({top:0,behavior:'instant'});
+}
+function returnToOverview(){
+  var landing=document.getElementById('landing');
+  var app=document.getElementById('mainApp');
+  if(app) app.style.display='none';
+  if(landing) landing.style.display='block';
+  window.scrollTo({top:0,behavior:'instant'});
+}
+</script>
+
+</body>
+</html>
